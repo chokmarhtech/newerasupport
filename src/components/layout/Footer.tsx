@@ -92,7 +92,7 @@ export default function Footer() {
             <li className="flex items-start gap-3">
               <Phone className="w-5 h-5 text-brand-mint shrink-0 mt-0.5" />
               <div>
-                <span className="block font-bold text-white">020 7946 0192</span>
+                <a href="tel:07565805795" className="block font-bold text-white hover:text-brand-mint transition-colors">07565 805795</a>
                 <span className="text-xs text-brand-canvas/50">24/7 Rapid Deployment Line</span>
               </div>
             </li>
@@ -106,8 +106,8 @@ export default function Footer() {
               <MapPin className="w-5 h-5 text-brand-mint shrink-0 mt-0.5" />
               <span className="leading-normal">
                 New Era Support Ltd<br />
-                88 Kingsway, Holborn<br />
-                London, WC2B 6SR
+                Flat 10 The Compasses, 11 Farley Hill,<br />
+                Luton, Bedfordshire
               </span>
             </li>
           </ul>

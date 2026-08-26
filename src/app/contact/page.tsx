@@ -7,8 +7,9 @@ import Footer from "@/components/layout/Footer";
 import { Input, Textarea } from "@/components/ui/input";
 import Button from "@/components/ui/button";
 import { submitGeneralInquiry } from "@/app/actions/submit";
-import { CheckCircle2, Phone, Mail, MapPin, Building2, User } from "lucide-react";
+import { CheckCircle2, Phone, Mail, MapPin, ArrowLeft, Building2, User } from "lucide-react";
 import Link from "next/link";
+import { FadeIn } from "@/components/ui/motion";
 
 const ALL_ROLES = [
   "Interim Manager",
@@ -40,11 +41,18 @@ export default function ContactPage() {
     <div className="flex flex-col min-h-screen bg-brand-canvas text-brand-navy">
       <Navbar />
 
-      <main className="grow py-12 lg:py-20">
+      <main className="flex-grow py-12 lg:py-20">
         <div className="max-w-7xl mx-auto px-6">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-sm text-brand-slate hover:text-brand-navy mb-8 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back to Home
+          </Link>
+
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-            {/* LEFT COLUMN: CONTACT DETAILS & PHOTO CARD (from Valley Best Care reference) */}
-            <div className="lg:col-span-5 flex flex-col gap-8">
+            {/* LEFT COLUMN: CONTACT DETAILS & PHOTO CARD */}
+            <FadeIn direction="right" className="lg:col-span-5 flex flex-col gap-8">
               <div className="bg-white p-8 rounded-3xl border border-brand-canvas shadow-sm flex flex-col gap-6">
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-brand-mint">
@@ -58,7 +66,7 @@ export default function ContactPage() {
                   </p>
                 </div>
 
-                <div className="relative aspect-4/3 rounded-2xl overflow-hidden shadow-md border border-brand-canvas">
+                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-md border border-brand-canvas">
                   <Image
                     src="/images/contact_caregiver_support.jpg"
                     alt="Caregiver support"
@@ -66,7 +74,7 @@ export default function ContactPage() {
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover"
                   />
-                  <div className="absolute inset-0 bg-linear-to-t from-brand-navy/80 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/80 via-transparent to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4 text-white">
                     <span className="text-[10px] uppercase font-extrabold text-brand-mint tracking-wider">UK-Wide Coverage</span>
                     <h4 className="text-base font-bold">24/7 Coordinator Hotline</h4>
@@ -82,7 +90,7 @@ export default function ContactPage() {
                       <span className="block font-bold text-xs uppercase tracking-wider text-brand-slate mb-0.5">
                         Phone Line (24/7 Rapid Deployment)
                       </span>
-                      <span className="block text-base font-bold">020 7946 0192</span>
+                      <a href="tel:07565805795" className="block text-base font-bold text-brand-navy hover:text-brand-mint transition-colors">07565 805795</a>
                       <span className="text-xs text-brand-slate/75">Available 24/7 for urgent staffing</span>
                     </div>
                   </div>
@@ -115,17 +123,17 @@ export default function ContactPage() {
                       </span>
                       <span className="block leading-relaxed text-xs">
                         New Era Support Ltd<br />
-                        88 Kingsway, Holborn<br />
-                        London, WC2B 6SR
+                        Flat 10 The Compasses, 11 Farley Hill,<br />
+                        Luton, Bedfordshire
                       </span>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </FadeIn>
 
             {/* RIGHT COLUMN: DUAL-PURPOSE INQUIRY FORM */}
-            <div className="lg:col-span-7 bg-white p-8 md:p-12 rounded-3xl border border-brand-canvas shadow-sm">
+            <FadeIn direction="left" delay={0.2} className="lg:col-span-7 bg-white p-8 md:p-12 rounded-3xl border border-brand-canvas shadow-sm">
               {state?.success ? (
                 <div className="text-center py-12 flex flex-col items-center gap-6">
                   <div className="w-16 h-16 rounded-full bg-brand-mint/15 flex items-center justify-center">
@@ -228,7 +236,7 @@ export default function ContactPage() {
                       label="Phone Number"
                       name="phone"
                       type="tel"
-                      placeholder="e.g. 07700 900000"
+                      placeholder="e.g. 07565 805795"
                       error={state?.errors?.phone?.[0]}
                     />
                   </div>
@@ -279,7 +287,7 @@ export default function ContactPage() {
                   </Button>
                 </form>
               )}
-            </div>
+            </FadeIn>
           </div>
         </div>
       </main>

@@ -5,6 +5,7 @@ import { ArrowRight, ShieldCheck, Heart, Users, Award, Target, Eye } from "lucid
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Button from "@/components/ui/button";
+import { FadeIn, StaggerContainer, StaggerItem, HoverCard } from "@/components/ui/motion";
 
 export default function AboutPage() {
   return (
@@ -15,7 +16,7 @@ export default function AboutPage() {
         {/* HERO SECTION WITH ASYMMETRIC IMAGE CONTAINER */}
         <section className="py-20 lg:py-24 bg-white border-b border-brand-canvas">
           <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-7 flex flex-col gap-6">
+            <FadeIn direction="right" className="lg:col-span-7 flex flex-col gap-6">
               <span className="text-xs font-bold uppercase tracking-wider text-brand-mint">
                 About New Era Support Ltd
               </span>
@@ -37,26 +38,27 @@ export default function AboutPage() {
                   </Button>
                 </Link>
               </div>
-            </div>
+            </FadeIn>
 
             {/* ASYMMETRIC PHOTO CONTAINER */}
-            <div className="lg:col-span-5 relative flex justify-center">
+            <FadeIn direction="left" delay={0.2} className="lg:col-span-5 relative flex justify-center">
               <div className="absolute -inset-4 bg-brand-mint/20 rounded-[50px] transform -rotate-3 blur-sm" />
               <div className="relative w-full max-w-[420px] aspect-[4/3] rounded-[36px] overflow-hidden shadow-2xl border-4 border-white">
                 <Image
                   src="/images/about_care_team.jpg"
                   alt="New Era Support Team"
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover"
                 />
               </div>
-            </div>
+            </FadeIn>
           </div>
         </section>
 
         {/* VISION & MISSION PILLARS */}
         <section className="py-20 max-w-7xl mx-auto px-6">
-          <div className="text-center max-w-2xl mx-auto mb-16">
+          <FadeIn className="text-center max-w-2xl mx-auto mb-16">
             <span className="text-xs font-bold uppercase tracking-wider text-brand-mint">
               Guiding Principles
             </span>
@@ -66,45 +68,49 @@ export default function AboutPage() {
             <p className="text-brand-slate text-sm sm:text-base">
               The foundation of everything we build at New Era Support Ltd.
             </p>
-          </div>
+          </FadeIn>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* VISION CARD */}
-            <div className="bg-white rounded-3xl p-8 md:p-10 border border-brand-canvas shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
-              <div>
-                <div className="w-14 h-14 rounded-2xl bg-brand-mint/20 flex items-center justify-center mb-6">
-                  <Eye className="w-7 h-7 text-brand-navy" />
+            <StaggerItem>
+              <HoverCard className="bg-white rounded-3xl p-8 md:p-10 border border-brand-canvas shadow-sm flex flex-col justify-between h-full">
+                <div>
+                  <div className="w-14 h-14 rounded-2xl bg-brand-mint/20 flex items-center justify-center mb-6">
+                    <Eye className="w-7 h-7 text-brand-navy" />
+                  </div>
+                  <h3 className="font-sans text-2xl font-bold mb-4 text-brand-navy">
+                    Our Vision
+                  </h3>
+                  <p className="text-brand-slate text-sm leading-relaxed">
+                    To become a trusted UK-wide workforce partner, recognized for providing highly skilled, reliable, compassionate, and professional staff who make a positive difference to the people and organizations we serve. We create stronger, safer, and more effective environments by connecting organizations with the right people at the right time.
+                  </p>
                 </div>
-                <h3 className="font-sans text-2xl font-bold mb-4 text-brand-navy">
-                  Our Vision
-                </h3>
-                <p className="text-brand-slate text-sm leading-relaxed">
-                  To become a trusted UK-wide workforce partner, recognized for providing highly skilled, reliable, compassionate, and professional staff who make a positive difference to the people and organizations we serve. We create stronger, safer, and more effective environments by connecting organizations with the right people at the right time.
-                </p>
-              </div>
-            </div>
+              </HoverCard>
+            </StaggerItem>
 
             {/* MISSION CARD */}
-            <div className="bg-white rounded-3xl p-8 md:p-10 border border-brand-canvas shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
-              <div>
-                <div className="w-14 h-14 rounded-2xl bg-brand-navy text-brand-mint flex items-center justify-center mb-6">
-                  <Target className="w-7 h-7" />
+            <StaggerItem>
+              <HoverCard className="bg-white rounded-3xl p-8 md:p-10 border border-brand-canvas shadow-sm flex flex-col justify-between h-full">
+                <div>
+                  <div className="w-14 h-14 rounded-2xl bg-brand-navy text-brand-mint flex items-center justify-center mb-6">
+                    <Target className="w-7 h-7" />
+                  </div>
+                  <h3 className="font-sans text-2xl font-bold mb-4 text-brand-navy">
+                    Our Mission
+                  </h3>
+                  <p className="text-brand-slate text-sm leading-relaxed">
+                    To provide high-quality, dependable, and professionally supported staffing solutions across the UK. We maintain the highest standards of safeguarding, reliability, and person-centered support through our core commitment: <strong className="text-brand-navy">the right people, the right support, and the right standards—wherever they are needed.</strong>
+                  </p>
                 </div>
-                <h3 className="font-sans text-2xl font-bold mb-4 text-brand-navy">
-                  Our Mission
-                </h3>
-                <p className="text-brand-slate text-sm leading-relaxed">
-                  To provide high-quality, dependable, and professionally supported staffing solutions across the UK. We maintain the highest standards of safeguarding, reliability, and person-centered support through our core commitment: <strong className="text-brand-navy">the right people, the right support, and the right standards—wherever they are needed.</strong>
-                </p>
-              </div>
-            </div>
-          </div>
+              </HoverCard>
+            </StaggerItem>
+          </StaggerContainer>
         </section>
 
         {/* CORE VALUES */}
         <section className="py-20 bg-white border-t border-brand-canvas">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center max-w-2xl mx-auto mb-16">
+            <FadeIn className="text-center max-w-2xl mx-auto mb-16">
               <span className="text-xs font-bold uppercase tracking-wider text-brand-mint">
                 What We Stand For
               </span>
@@ -114,92 +120,103 @@ export default function AboutPage() {
               <p className="text-brand-slate text-sm sm:text-base">
                 Four principles that drive our staffing standards and candidate care.
               </p>
-            </div>
+            </FadeIn>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {/* Value 1 */}
-              <div className="bg-brand-canvas p-8 rounded-3xl border border-brand-slate/10 flex flex-col items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-brand-navy shadow-sm">
-                  <Heart className="w-6 h-6 text-brand-navy" />
-                </div>
-                <h3 className="font-sans text-xl font-bold text-brand-navy">
-                  Person-Centred Care
-                </h3>
-                <p className="text-xs text-brand-slate leading-relaxed">
-                  Prioritizing the dignity, safety, and respect of every individual served across care and housing settings.
-                </p>
-              </div>
+              <StaggerItem>
+                <HoverCard className="bg-brand-canvas p-8 rounded-3xl border border-brand-slate/10 flex flex-col items-start gap-4 h-full">
+                  <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-brand-navy shadow-sm">
+                    <Heart className="w-6 h-6 text-brand-navy" />
+                  </div>
+                  <h3 className="font-sans text-xl font-bold text-brand-navy">
+                    Person-Centred Care
+                  </h3>
+                  <p className="text-xs text-brand-slate leading-relaxed">
+                    Prioritizing the dignity, safety, and respect of every individual served across care and housing settings.
+                  </p>
+                </HoverCard>
+              </StaggerItem>
 
               {/* Value 2 */}
-              <div className="bg-brand-canvas p-8 rounded-3xl border border-brand-slate/10 flex flex-col items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-brand-navy shadow-sm">
-                  <ShieldCheck className="w-6 h-6 text-brand-navy" />
-                </div>
-                <h3 className="font-sans text-xl font-bold text-brand-navy">
-                  Integrity & Safeguarding
-                </h3>
-                <p className="text-xs text-brand-slate leading-relaxed">
-                  Uncompromising compliance, background vetting, DBS checks, and strict adherence to UK care standards.
-                </p>
-              </div>
+              <StaggerItem>
+                <HoverCard className="bg-brand-canvas p-8 rounded-3xl border border-brand-slate/10 flex flex-col items-start gap-4 h-full">
+                  <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-brand-navy shadow-sm">
+                    <ShieldCheck className="w-6 h-6 text-brand-navy" />
+                  </div>
+                  <h3 className="font-sans text-xl font-bold text-brand-navy">
+                    Integrity & Safeguarding
+                  </h3>
+                  <p className="text-xs text-brand-slate leading-relaxed">
+                    Uncompromising compliance, background vetting, DBS checks, and strict adherence to UK care standards.
+                  </p>
+                </HoverCard>
+              </StaggerItem>
 
               {/* Value 3 */}
-              <div className="bg-brand-canvas p-8 rounded-3xl border border-brand-slate/10 flex flex-col items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-brand-navy shadow-sm">
-                  <Users className="w-6 h-6 text-brand-navy" />
-                </div>
-                <h3 className="font-sans text-xl font-bold text-brand-navy">
-                  Reliability & Continuity
-                </h3>
-                <p className="text-xs text-brand-slate leading-relaxed">
-                  Consistent delivery of dependable personnel who integrate seamlessly into client operational teams.
-                </p>
-              </div>
+              <StaggerItem>
+                <HoverCard className="bg-brand-canvas p-8 rounded-3xl border border-brand-slate/10 flex flex-col items-start gap-4 h-full">
+                  <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-brand-navy shadow-sm">
+                    <Users className="w-6 h-6 text-brand-navy" />
+                  </div>
+                  <h3 className="font-sans text-xl font-bold text-brand-navy">
+                    Reliability & Continuity
+                  </h3>
+                  <p className="text-xs text-brand-slate leading-relaxed">
+                    Consistent delivery of dependable personnel who integrate seamlessly into client operational teams.
+                  </p>
+                </HoverCard>
+              </StaggerItem>
 
               {/* Value 4 */}
-              <div className="bg-brand-canvas p-8 rounded-3xl border border-brand-slate/10 flex flex-col items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-brand-navy shadow-sm">
-                  <Award className="w-6 h-6 text-brand-navy" />
-                </div>
-                <h3 className="font-sans text-xl font-bold text-brand-navy">
-                  Valuing Our Workforce
-                </h3>
-                <p className="text-xs text-brand-slate leading-relaxed">
-                  Continuous professional support, fair treatment, competitive rates, and active career development.
-                </p>
-              </div>
-            </div>
+              <StaggerItem>
+                <HoverCard className="bg-brand-canvas p-8 rounded-3xl border border-brand-slate/10 flex flex-col items-start gap-4 h-full">
+                  <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-brand-navy shadow-sm">
+                    <Award className="w-6 h-6 text-brand-navy" />
+                  </div>
+                  <h3 className="font-sans text-xl font-bold text-brand-navy">
+                    Valuing Our Workforce
+                  </h3>
+                  <p className="text-xs text-brand-slate leading-relaxed">
+                    Continuous professional support, fair treatment, competitive rates, and active career development.
+                  </p>
+                </HoverCard>
+              </StaggerItem>
+            </StaggerContainer>
           </div>
         </section>
 
         {/* MISSION BANNER WITH OVERLAPPING NURSE PORTRAIT */}
         <section className="py-20 max-w-7xl mx-auto px-6">
-          <div className="bg-brand-navy text-white rounded-[40px] p-8 md:p-14 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl border-4 border-white">
-            <div className="max-w-xl">
-              <span className="text-xs font-extrabold uppercase tracking-widest text-brand-mint block mb-2">Empowering Care</span>
-              <h2 className="font-sans text-3xl font-bold mb-2">
-                Need Reliable Staff for Your Facility?
-              </h2>
-              <p className="text-brand-canvas/80 text-sm">
-                Speak with our workforce coordinator today for immediate placement support.
-              </p>
-            </div>
-            <div className="relative flex items-center gap-4">
-              <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-brand-mint shadow-lg hidden sm:block">
-                <Image
-                  src="/images/mission_nurse_portrait.jpg"
-                  alt="UK Registered Nurse"
-                  fill
-                  className="object-cover"
-                />
+          <FadeIn>
+            <div className="bg-brand-navy text-white rounded-[40px] p-8 md:p-14 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl border-4 border-white">
+              <div className="max-w-xl">
+                <span className="text-xs font-extrabold uppercase tracking-widest text-brand-mint block mb-2">Empowering Care</span>
+                <h2 className="font-sans text-3xl font-bold mb-2">
+                  Need Reliable Staff for Your Facility?
+                </h2>
+                <p className="text-brand-canvas/80 text-sm">
+                  Speak with our workforce coordinator today for immediate placement support.
+                </p>
               </div>
-              <Link href="/contact">
-                <Button variant="secondary" size="lg" className="flex items-center gap-2">
-                  Get In Touch <ArrowRight className="w-4 h-4" />
-                </Button>
-              </Link>
+              <div className="relative flex items-center gap-4">
+                <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-brand-mint shadow-lg hidden sm:block">
+                  <Image
+                    src="/images/mission_nurse_portrait.jpg"
+                    alt="UK Registered Nurse"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 96px"
+                    className="object-cover"
+                  />
+                </div>
+                <Link href="/contact">
+                  <Button variant="secondary" size="lg" className="flex items-center gap-2">
+                    Get In Touch <ArrowRight className="w-4 h-4" />
+                  </Button>
+                </Link>
+              </div>
             </div>
-          </div>
+          </FadeIn>
         </section>
       </main>
 

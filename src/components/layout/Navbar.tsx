@@ -17,7 +17,7 @@ export default function Navbar() {
           <div className="flex items-center gap-6 text-brand-canvas/80">
             <span className="flex items-center gap-1.5 font-medium">
               <Phone className="w-3.5 h-3.5 text-brand-mint" /> 
-              24/7 Rapid Deployment: <strong className="text-white">020 7946 0192</strong>
+              24/7 Rapid Deployment: <a href="tel:07565805795" className="text-white hover:text-brand-mint font-bold transition-colors">07565 805795</a>
             </span>
             <span className="hidden md:flex items-center gap-1.5 font-medium">
               <Mail className="w-3.5 h-3.5 text-brand-mint" /> info@newerasupport.co.uk

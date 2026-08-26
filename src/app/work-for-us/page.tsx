@@ -8,17 +8,14 @@ import Button from "@/components/ui/button";
 import { submitCandidateApplication } from "@/app/actions/submit";
 import {
   CheckCircle2,
-  ShieldAlert,
   Upload,
-  ArrowLeft,
   Clock,
-  Banknote,
   GraduationCap,
   Headphones,
   Briefcase,
-  UserCheck,
 } from "lucide-react";
 import Link from "next/link";
+import { FadeIn, StaggerContainer, StaggerItem, HoverCard } from "@/components/ui/motion";
 
 const ROLE_OPTIONS = [
   "Interim Manager",
@@ -107,7 +104,7 @@ export default function WorkForUsPage() {
       <main className="flex-grow">
         {/* HERO SECTION */}
         <section className="py-20 lg:py-24 bg-white border-b border-brand-canvas">
-          <div className="max-w-7xl mx-auto px-6 text-center max-w-3xl">
+          <FadeIn className="max-w-7xl mx-auto px-6 text-center max-w-3xl">
             <span className="text-xs font-bold uppercase tracking-wider text-brand-mint">
               Careers at New Era Support Ltd
             </span>
@@ -117,112 +114,128 @@ export default function WorkForUsPage() {
             <p className="text-brand-slate text-base sm:text-lg leading-relaxed">
               Join a supportive, reliable agency that values your dedication, respects your skills, and invests in your growth.
             </p>
-          </div>
+          </FadeIn>
         </section>
 
         {/* WHY WORK WITH US */}
         <section className="py-20 max-w-7xl mx-auto px-6">
-          <div className="text-center max-w-2xl mx-auto mb-16">
+          <FadeIn className="text-center max-w-2xl mx-auto mb-16">
             <span className="text-xs font-bold uppercase tracking-wider text-brand-mint">
               Candidate Benefits
             </span>
             <h2 className="font-sans text-3xl font-extrabold mt-1">Why Work With Us</h2>
-          </div>
+          </FadeIn>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="bg-white p-8 rounded-3xl border border-brand-canvas shadow-sm flex flex-col gap-3 hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 rounded-full bg-brand-canvas flex items-center justify-center text-brand-navy">
-                <Clock className="w-6 h-6 text-brand-navy" />
-              </div>
-              <h3 className="font-sans text-xl font-bold">Flexible Shifts</h3>
-              <p className="text-xs text-brand-slate leading-relaxed">
-                Choose working hours that suit your schedule, family commitments, and lifestyle.
-              </p>
-            </div>
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <StaggerItem>
+              <HoverCard className="bg-white p-8 rounded-3xl border border-brand-canvas shadow-sm flex flex-col gap-3 h-full">
+                <div className="w-12 h-12 rounded-full bg-brand-canvas flex items-center justify-center text-brand-navy">
+                  <Clock className="w-6 h-6 text-brand-navy" />
+                </div>
+                <h3 className="font-sans text-xl font-bold">Flexible Shifts</h3>
+                <p className="text-xs text-brand-slate leading-relaxed">
+                  Choose working hours that suit your schedule, family commitments, and lifestyle.
+                </p>
+              </HoverCard>
+            </StaggerItem>
 
-            <div className="bg-white p-8 rounded-3xl border border-brand-canvas shadow-sm flex flex-col gap-3 hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 rounded-full bg-brand-canvas flex items-center justify-center text-brand-navy">
-                <Briefcase className="w-6 h-6 text-brand-navy" />
-              </div>
-              <h3 className="font-sans text-xl font-bold">Competitive Pay</h3>
-              <p className="text-xs text-brand-slate leading-relaxed">
-                Transparent pay rates with prompt, reliable weekly payroll schedules.
-              </p>
-            </div>
+            <StaggerItem>
+              <HoverCard className="bg-white p-8 rounded-3xl border border-brand-canvas shadow-sm flex flex-col gap-3 h-full">
+                <div className="w-12 h-12 rounded-full bg-brand-canvas flex items-center justify-center text-brand-navy">
+                  <Briefcase className="w-6 h-6 text-brand-navy" />
+                </div>
+                <h3 className="font-sans text-xl font-bold">Competitive Pay</h3>
+                <p className="text-xs text-brand-slate leading-relaxed">
+                  Transparent pay rates with prompt, reliable weekly payroll schedules.
+                </p>
+              </HoverCard>
+            </StaggerItem>
 
-            <div className="bg-white p-8 rounded-3xl border border-brand-canvas shadow-sm flex flex-col gap-3 hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 rounded-full bg-brand-canvas flex items-center justify-center text-brand-navy">
-                <GraduationCap className="w-6 h-6 text-brand-navy" />
-              </div>
-              <h3 className="font-sans text-xl font-bold">Development</h3>
-              <p className="text-xs text-brand-slate leading-relaxed">
-                Access to ongoing training, safeguarding updates, and career pathways.
-              </p>
-            </div>
+            <StaggerItem>
+              <HoverCard className="bg-white p-8 rounded-3xl border border-brand-canvas shadow-sm flex flex-col gap-3 h-full">
+                <div className="w-12 h-12 rounded-full bg-brand-canvas flex items-center justify-center text-brand-navy">
+                  <GraduationCap className="w-6 h-6 text-brand-navy" />
+                </div>
+                <h3 className="font-sans text-xl font-bold">Development</h3>
+                <p className="text-xs text-brand-slate leading-relaxed">
+                  Access to ongoing training, safeguarding updates, and career pathways.
+                </p>
+              </HoverCard>
+            </StaggerItem>
 
-            <div className="bg-white p-8 rounded-3xl border border-brand-canvas shadow-sm flex flex-col gap-3 hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 rounded-full bg-brand-canvas flex items-center justify-center text-brand-navy">
-                <Headphones className="w-6 h-6 text-brand-navy" />
-              </div>
-              <h3 className="font-sans text-xl font-bold">24/7 Support</h3>
-              <p className="text-xs text-brand-slate leading-relaxed">
-                Dedicated 24/7 coordinator support to ensure safe and organized placements.
-              </p>
-            </div>
-          </div>
+            <StaggerItem>
+              <HoverCard className="bg-white p-8 rounded-3xl border border-brand-canvas shadow-sm flex flex-col gap-3 h-full">
+                <div className="w-12 h-12 rounded-full bg-brand-canvas flex items-center justify-center text-brand-navy">
+                  <Headphones className="w-6 h-6 text-brand-navy" />
+                </div>
+                <h3 className="font-sans text-xl font-bold">24/7 Support</h3>
+                <p className="text-xs text-brand-slate leading-relaxed">
+                  Dedicated 24/7 coordinator support to ensure safe and organized placements.
+                </p>
+              </HoverCard>
+            </StaggerItem>
+          </StaggerContainer>
         </section>
 
         {/* APPLICATION PROCESS (STEP BY STEP WITH PROMINENT NUMBERS) */}
         <section className="py-20 bg-white border-t border-brand-canvas">
           <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center max-w-2xl mx-auto mb-16">
+            <FadeIn className="text-center max-w-2xl mx-auto mb-16">
               <span className="text-xs font-bold uppercase tracking-wider text-brand-mint">
                 How To Join
               </span>
               <h2 className="font-sans text-3xl font-extrabold mt-1">
                 4-Step Application Process
               </h2>
-            </div>
+            </FadeIn>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-              <div className="bg-brand-canvas p-8 rounded-3xl border border-brand-slate/10 flex flex-col gap-3 relative shadow-sm">
-                <span className="text-4xl font-black text-brand-mint">01</span>
-                <h3 className="font-sans text-lg font-bold">Submit Application</h3>
-                <p className="text-xs text-brand-slate leading-relaxed">
-                  Fill out the online registration form and upload your current CV.
-                </p>
-              </div>
+            <StaggerContainer className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              <StaggerItem>
+                <HoverCard className="bg-brand-canvas p-8 rounded-3xl border border-brand-slate/10 flex flex-col gap-3 relative shadow-sm h-full">
+                  <span className="text-4xl font-black text-brand-mint">01</span>
+                  <h3 className="font-sans text-lg font-bold">Submit Application</h3>
+                  <p className="text-xs text-brand-slate leading-relaxed">
+                    Fill out the online registration form and upload your current CV.
+                  </p>
+                </HoverCard>
+              </StaggerItem>
 
-              <div className="bg-brand-canvas p-8 rounded-3xl border border-brand-slate/10 flex flex-col gap-3 relative shadow-sm">
-                <span className="text-4xl font-black text-brand-mint">02</span>
-                <h3 className="font-sans text-lg font-bold">Compliance & Vetting</h3>
-                <p className="text-xs text-brand-slate leading-relaxed">
-                  Document verification (DBS check, Right to Work in UK, clinical references).
-                </p>
-              </div>
+              <StaggerItem>
+                <HoverCard className="bg-brand-canvas p-8 rounded-3xl border border-brand-slate/10 flex flex-col gap-3 relative shadow-sm h-full">
+                  <span className="text-4xl font-black text-brand-mint">02</span>
+                  <h3 className="font-sans text-lg font-bold">Compliance & Vetting</h3>
+                  <p className="text-xs text-brand-slate leading-relaxed">
+                    Document verification (DBS check, Right to Work in UK, clinical references).
+                  </p>
+                </HoverCard>
+              </StaggerItem>
 
-              <div className="bg-brand-canvas p-8 rounded-3xl border border-brand-slate/10 flex flex-col gap-3 relative shadow-sm">
-                <span className="text-4xl font-black text-brand-mint">03</span>
-                <h3 className="font-sans text-lg font-bold">Onboarding</h3>
-                <p className="text-xs text-brand-slate leading-relaxed">
-                  Briefing on New Era standards, safety protocols, and client orientation.
-                </p>
-              </div>
+              <StaggerItem>
+                <HoverCard className="bg-brand-canvas p-8 rounded-3xl border border-brand-slate/10 flex flex-col gap-3 relative shadow-sm h-full">
+                  <span className="text-4xl font-black text-brand-mint">03</span>
+                  <h3 className="font-sans text-lg font-bold">Onboarding</h3>
+                  <p className="text-xs text-brand-slate leading-relaxed">
+                    Briefing on New Era standards, safety protocols, and client orientation.
+                  </p>
+                </HoverCard>
+              </StaggerItem>
 
-              <div className="bg-brand-canvas p-8 rounded-3xl border border-brand-slate/10 flex flex-col gap-3 relative shadow-sm">
-                <span className="text-4xl font-black text-brand-mint">04</span>
-                <h3 className="font-sans text-lg font-bold">Start Working</h3>
-                <p className="text-xs text-brand-slate leading-relaxed">
-                  Receive shift bookings that match your skills, preferences, and availability.
-                </p>
-              </div>
-            </div>
+              <StaggerItem>
+                <HoverCard className="bg-brand-canvas p-8 rounded-3xl border border-brand-slate/10 flex flex-col gap-3 relative shadow-sm h-full">
+                  <span className="text-4xl font-black text-brand-mint">04</span>
+                  <h3 className="font-sans text-lg font-bold">Start Working</h3>
+                  <p className="text-xs text-brand-slate leading-relaxed">
+                    Receive shift bookings that match your skills, preferences, and availability.
+                  </p>
+                </HoverCard>
+              </StaggerItem>
+            </StaggerContainer>
           </div>
         </section>
 
         {/* APPLICATION FORM SECTION */}
         <section className="py-20 max-w-3xl mx-auto px-6">
-          <div className="bg-white rounded-3xl p-8 md:p-12 shadow-md border border-brand-canvas">
+          <FadeIn className="bg-white rounded-3xl p-8 md:p-12 shadow-md border border-brand-canvas">
             {state?.success ? (
               <div className="text-center py-8 flex flex-col items-center gap-6">
                 <div className="w-16 h-16 rounded-full bg-brand-mint/15 flex items-center justify-center">
@@ -293,7 +306,7 @@ export default function WorkForUsPage() {
                     label="Phone Number *"
                     name="phone"
                     type="tel"
-                    placeholder="e.g. 07700 900088"
+                    placeholder="e.g. 07565 805795"
                     error={state?.errors?.phone?.[0]}
                     required
                   />
@@ -421,7 +434,7 @@ export default function WorkForUsPage() {
                 </Button>
               </form>
             )}
-          </div>
+          </FadeIn>
         </section>
       </main>
 

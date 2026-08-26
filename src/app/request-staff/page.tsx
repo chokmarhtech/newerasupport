@@ -125,7 +125,7 @@ export default function RequestStaffPage() {
                     label="Phone Number *"
                     name="phone"
                     type="tel"
-                    placeholder="e.g. 07700 900077"
+                    placeholder="e.g. 07565 805795"
                     error={state?.errors?.phone?.[0]}
                     required
                   />
@@ -133,7 +133,7 @@ export default function RequestStaffPage() {
                     <Input
                       label="Location / Facility Address *"
                       name="location"
-                      placeholder="e.g. London, WC2B"
+                      placeholder="e.g. Luton, Bedfordshire"
                       error={state?.errors?.location?.[0]}
                       required
                     />

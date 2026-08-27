@@ -17,7 +17,7 @@ export default function Footer() {
               alt="New Era Support Limited Logo"
               width={240}
               height={60}
-              className="h-12 w-auto object-contain"
+              className="h-8 sm:h-10 md:h-12 w-auto object-contain"
             />
           </Link>
           <p className="text-brand-mint font-semibold text-xs uppercase tracking-wider mt-1">

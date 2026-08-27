@@ -50,7 +50,7 @@ export default function NotFound() {
               </h1>
 
               <p className="text-brand-slate text-base sm:text-lg leading-relaxed max-w-xl">
-                The page you are looking for doesn't exist, has been moved, or the link may be outdated. Let's get you back on track!
+                The page you are looking for doesn&apos;t exist, has been moved, or the link may be outdated. Let&apos;s get you back on track!
               </p>
 
               {/* Main Action Buttons */}

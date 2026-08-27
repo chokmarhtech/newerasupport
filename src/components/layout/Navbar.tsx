@@ -48,7 +48,7 @@ export default function Navbar() {
             alt="New Era Support Limited Logo"
             width={240}
             height={60}
-            className="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            className="h-8 sm:h-10 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
             priority
           />
         </Link>
@@ -117,7 +117,7 @@ export default function Navbar() {
                       alt="New Era Support Logo"
                       width={180}
                       height={45}
-                      className="h-9 w-auto object-contain"
+                      className="h-7 sm:h-8 w-auto object-contain"
                     />
                   </SheetTitle>
                 </SheetHeader>

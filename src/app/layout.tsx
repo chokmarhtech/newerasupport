@@ -16,9 +16,12 @@ export const metadata: Metadata = {
   description: "High-converting, compliant, and accessible UK care & housing staffing solutions.",
   metadataBase: new URL("https://newerasupport.co.uk"),
   icons: {
-    icon: "/icon/icon.jpg",
-    shortcut: "/icon/icon.jpg",
-    apple: "/icon/icon.jpg",
+    icon: [
+      { url: "/icon.png?v=3", type: "image/png" },
+      { url: "/favicon.ico?v=3" },
+    ],
+    shortcut: "/favicon.ico?v=3",
+    apple: "/apple-icon.png?v=3",
   },
   openGraph: {
     title: "New Era Support Ltd | Healthcare & Housing Staffing Solutions",
@@ -35,6 +38,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${plusJakartaSans.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <link rel="icon" href="/icon.png?v=3" type="image/png" />
+        <link rel="shortcut icon" href="/favicon.ico?v=3" />
+        <link rel="apple-touch-icon" href="/apple-icon.png?v=3" />
+      </head>
       <body className="min-h-full flex flex-col bg-white">
         <QueryProvider>
           {children}

@@ -3,11 +3,20 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, ArrowRight, Phone, Mail, ShieldCheck } from "lucide-react";
+import { Menu, ArrowRight, Phone, Mail, ShieldCheck, Clock, MapPin } from "lucide-react";
 import Button from "../ui/button";
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetClose,
+} from "@/components/ui/sheet";
+import { StaggerContainer, StaggerItem } from "@/components/ui/motion";
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-brand-canvas shadow-sm">
@@ -87,63 +96,119 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* MOBILE TOGGLE */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden p-2 text-brand-navy hover:text-brand-mint focus:outline-none transition-colors cursor-pointer"
-          aria-label="Toggle Menu"
-        >
-          {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
-      </div>
+        {/* SHADCN MOTION MOBILE SHEET NAVBAR DRAWER */}
+        <div className="md:hidden">
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger asChild>
+              <button
+                className="p-2 text-brand-navy hover:text-brand-mint focus:outline-hidden transition-colors cursor-pointer rounded-lg hover:bg-brand-canvas"
+                aria-label="Open Navigation Menu"
+              >
+                <Menu className="w-6 h-6" />
+              </button>
+            </SheetTrigger>
 
-      {/* MOBILE DRAWER */}
-      {isOpen && (
-        <div className="md:hidden absolute top-[116px] left-0 w-full bg-white border-b border-brand-canvas shadow-xl flex flex-col py-6 px-6 gap-4 animate-in fade-in slide-in-from-top-4 duration-200">
-          <Link
-            href="/"
-            onClick={() => setIsOpen(false)}
-            className="text-brand-navy font-bold text-lg py-2 border-b border-brand-canvas"
-          >
-            Home
-          </Link>
-          <Link
-            href="/about"
-            onClick={() => setIsOpen(false)}
-            className="text-brand-navy font-bold text-lg py-2 border-b border-brand-canvas"
-          >
-            About Us
-          </Link>
-          <Link
-            href="/services"
-            onClick={() => setIsOpen(false)}
-            className="text-brand-navy font-bold text-lg py-2 border-b border-brand-canvas"
-          >
-            Our Services
-          </Link>
-          <Link
-            href="/work-for-us"
-            onClick={() => setIsOpen(false)}
-            className="text-brand-navy font-bold text-lg py-2 border-b border-brand-canvas"
-          >
-            Work For Us
-          </Link>
-          <Link
-            href="/contact"
-            onClick={() => setIsOpen(false)}
-            className="text-brand-navy font-bold text-lg py-2 border-b border-brand-canvas"
-          >
-            Contact Us
-          </Link>
-          <div className="pt-4 flex flex-col gap-3">
-            <Link href="/request-staff" onClick={() => setIsOpen(false)}>
-              <Button variant="secondary" size="md" className="w-full flex items-center justify-center gap-2">
-                Request Staff <ArrowRight className="w-4 h-4" />
-              </Button>
-            </Link>
-          </div>
+            <SheetContent side="right" className="flex flex-col justify-between w-full max-w-xs sm:max-w-sm p-6 bg-white">
+              <div className="flex flex-col gap-6">
+                <SheetHeader className="text-left border-b border-brand-canvas pb-4">
+                  <SheetTitle className="flex items-center">
+                    <Image
+                      src="/logos/logo-1.png"
+                      alt="New Era Support Logo"
+                      width={180}
+                      height={45}
+                      className="h-9 w-auto object-contain"
+                    />
+                  </SheetTitle>
+                </SheetHeader>
+
+                {/* STAGGERED FRAMER MOTION MOBILE LINKS */}
+                <StaggerContainer staggerChildren={0.08} delayChildren={0.15} className="flex flex-col gap-2 font-semibold">
+                  <StaggerItem>
+                    <SheetClose asChild>
+                      <Link
+                        href="/"
+                        className="text-brand-navy hover:text-brand-mint py-2.5 px-3 rounded-xl hover:bg-brand-canvas transition-colors text-base font-bold flex items-center"
+                      >
+                        <span>Home</span>
+                      </Link>
+                    </SheetClose>
+                  </StaggerItem>
+
+                  <StaggerItem>
+                    <SheetClose asChild>
+                      <Link
+                        href="/about"
+                        className="text-brand-navy hover:text-brand-mint py-2.5 px-3 rounded-xl hover:bg-brand-canvas transition-colors text-base font-bold flex items-center"
+                      >
+                        <span>About Us</span>
+                      </Link>
+                    </SheetClose>
+                  </StaggerItem>
+
+                  <StaggerItem>
+                    <SheetClose asChild>
+                      <Link
+                        href="/services"
+                        className="text-brand-navy hover:text-brand-mint py-2.5 px-3 rounded-xl hover:bg-brand-canvas transition-colors text-base font-bold flex items-center"
+                      >
+                        <span>Our Services</span>
+                      </Link>
+                    </SheetClose>
+                  </StaggerItem>
+
+                  <StaggerItem>
+                    <SheetClose asChild>
+                      <Link
+                        href="/work-for-us"
+                        className="text-brand-navy hover:text-brand-mint py-2.5 px-3 rounded-xl hover:bg-brand-canvas transition-colors text-base font-bold flex items-center"
+                      >
+                        <span>Work For Us</span>
+                      </Link>
+                    </SheetClose>
+                  </StaggerItem>
+
+                  <StaggerItem>
+                    <SheetClose asChild>
+                      <Link
+                        href="/contact"
+                        className="text-brand-navy hover:text-brand-mint py-2.5 px-3 rounded-xl hover:bg-brand-canvas transition-colors text-base font-bold flex items-center"
+                      >
+                        <span>Contact Us</span>
+                      </Link>
+                    </SheetClose>
+                  </StaggerItem>
+                </StaggerContainer>
+              </div>
+
+              {/* SHEET FOOTER & CTAs */}
+              <div className="flex flex-col gap-4 pt-6 border-t border-brand-canvas">
+                <SheetClose asChild>
+                  <Link href="/request-staff">
+                    <Button variant="secondary" size="md" className="w-full flex items-center justify-center gap-2 shadow-sm">
+                      Request Staff <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </Link>
+                </SheetClose>
+
+                <div className="bg-brand-canvas p-4 rounded-2xl border border-brand-slate/10 flex flex-col gap-2 text-xs">
+                  <div className="flex items-center gap-2 font-bold text-brand-navy">
+                    <Clock className="w-3.5 h-3.5 text-brand-mint shrink-0" />
+                    <span>24/7 Rapid Deployment Line</span>
+                  </div>
+                  <a href="tel:07565805795" className="font-extrabold text-sm text-brand-navy hover:text-brand-mint transition-colors">
+                    07565 805795
+                  </a>
+                  <div className="flex items-center gap-1.5 text-[10px] text-brand-slate pt-1 border-t border-brand-slate/10">
+                    <MapPin className="w-3 h-3 text-brand-navy" />
+                    <span>Luton, Bedfordshire • UK-Wide</span>
+                  </div>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
-      )}
+      </div>
     </header>
   );
 }

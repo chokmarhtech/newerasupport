@@ -24,7 +24,7 @@ const ALL_ROLES = [
 
 export default function ContactPage() {
   const [state, formAction, isPending] = useActionState(submitGeneralInquiry, null);
-  
+
   // Dual purpose switcher state
   const [userIntent, setUserIntent] = useState<"client" | "candidate">("client");
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
@@ -41,7 +41,7 @@ export default function ContactPage() {
     <div className="flex flex-col min-h-screen bg-brand-canvas text-brand-navy">
       <Navbar />
 
-      <main className="flex-grow py-12 lg:py-20">
+      <main className="grow py-12 lg:py-20">
         <div className="max-w-7xl mx-auto px-6">
           <Link
             href="/"
@@ -66,7 +66,7 @@ export default function ContactPage() {
                   </p>
                 </div>
 
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-md border border-brand-canvas">
+                <div className="relative aspect-4/3 rounded-2xl overflow-hidden shadow-md border border-brand-canvas">
                   <Image
                     src="/images/contact_caregiver_support.jpg"
                     alt="Caregiver support"
@@ -74,10 +74,10 @@ export default function ContactPage() {
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/80 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-brand-navy/80 via-transparent to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4 text-white">
                     <span className="text-[10px] uppercase font-extrabold text-brand-mint tracking-wider">UK-Wide Coverage</span>
-                    <h4 className="text-base font-bold">24/7 Coordinator Hotline</h4>
+                    <h4 className="text-base font-bold">24/7 Admin Hotline</h4>
                   </div>
                 </div>
 
@@ -175,11 +175,10 @@ export default function ContactPage() {
                       <button
                         type="button"
                         onClick={() => setUserIntent("client")}
-                        className={`p-4 rounded-2xl border text-left flex items-center gap-3 transition-all cursor-pointer ${
-                          userIntent === "client"
+                        className={`p-4 rounded-2xl border text-left flex items-center gap-3 transition-all cursor-pointer ${userIntent === "client"
                             ? "bg-brand-navy text-white border-brand-navy shadow-sm"
                             : "bg-white text-brand-navy border-brand-slate/20 hover:border-brand-navy"
-                        }`}
+                          }`}
                       >
                         <Building2 className={`w-5 h-5 ${userIntent === "client" ? "text-brand-mint" : "text-brand-navy"}`} />
                         <div>
@@ -193,11 +192,10 @@ export default function ContactPage() {
                       <button
                         type="button"
                         onClick={() => setUserIntent("candidate")}
-                        className={`p-4 rounded-2xl border text-left flex items-center gap-3 transition-all cursor-pointer ${
-                          userIntent === "candidate"
+                        className={`p-4 rounded-2xl border text-left flex items-center gap-3 transition-all cursor-pointer ${userIntent === "candidate"
                             ? "bg-brand-navy text-white border-brand-navy shadow-sm"
                             : "bg-white text-brand-navy border-brand-slate/20 hover:border-brand-navy"
-                        }`}
+                          }`}
                       >
                         <User className={`w-5 h-5 ${userIntent === "candidate" ? "text-brand-mint" : "text-brand-navy"}`} />
                         <div>
@@ -252,11 +250,10 @@ export default function ContactPage() {
                           key={role}
                           type="button"
                           onClick={() => handleRoleToggle(role)}
-                          className={`p-3 rounded-xl border text-center text-xs font-semibold transition-all cursor-pointer ${
-                            selectedRoles.includes(role)
+                          className={`p-3 rounded-xl border text-center text-xs font-semibold transition-all cursor-pointer ${selectedRoles.includes(role)
                               ? "bg-brand-navy text-brand-mint border-brand-navy"
                               : "bg-brand-canvas text-brand-navy border-brand-slate/15 hover:border-brand-navy"
-                          }`}
+                            }`}
                         >
                           {role}
                         </button>

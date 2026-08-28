@@ -6,7 +6,7 @@ import Footer from "@/components/layout/Footer";
 import { Input, Textarea, Select } from "@/components/ui/input";
 import Button from "@/components/ui/button";
 import { submitClientRequest } from "@/app/actions/submit";
-import { CheckCircle2, ShieldCheck  } from "lucide-react";
+import { CheckCircle2, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 
 const ROLE_OPTIONS = [
@@ -42,7 +42,7 @@ export default function RequestStaffPage() {
 
       <main className="grow py-12 lg:py-20">
         <div className="max-w-3xl mx-auto px-6">
-          
+
           {/* Form Card */}
           <div className="bg-white rounded-3xl p-8 md:p-12 shadow-md border border-brand-canvas overflow-hidden">
             {state?.success ? (
@@ -54,7 +54,7 @@ export default function RequestStaffPage() {
                 <div>
                   <h2 className="font-sans text-3xl font-bold mb-2">Request Submitted</h2>
                   <p className="text-brand-slate max-w-md mx-auto">
-                    {state.message} Our UK staffing coordinators have been alerted and will reach out to you within the hour.
+                    {state.message} Our UK staffing Admins have been alerted and will reach out to you within the hour.
                   </p>
                   {state.mockMode && (
                     <p className="text-xs text-amber-600 bg-amber-50 px-3 py-1.5 rounded-full w-fit mx-auto mt-4 font-semibold border border-amber-200">
@@ -151,11 +151,10 @@ export default function RequestStaffPage() {
                         key={role}
                         type="button"
                         onClick={() => handleRoleToggle(role)}
-                        className={`flex items-center justify-between p-4 rounded-2xl border text-left text-sm font-semibold transition-all duration-200 cursor-pointer ${
-                          selectedRoles.includes(role)
+                        className={`flex items-center justify-between p-4 rounded-2xl border text-left text-sm font-semibold transition-all duration-200 cursor-pointer ${selectedRoles.includes(role)
                             ? "bg-brand-navy text-white border-brand-navy shadow-sm"
                             : "bg-white text-brand-navy border-brand-slate/20 hover:border-brand-navy"
-                        }`}
+                          }`}
                       >
                         <span>{role}</span>
                         <input
@@ -163,7 +162,7 @@ export default function RequestStaffPage() {
                           name="requiredRoles"
                           value={role}
                           checked={selectedRoles.includes(role)}
-                          onChange={() => {}} // Controlled via parent button
+                          onChange={() => { }} // Controlled via parent button
                           className="sr-only"
                         />
                       </button>

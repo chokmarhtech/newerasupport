@@ -33,7 +33,7 @@ export default function ServicesPage() {
               </Link>
               <Link href="/contact">
                 <Button variant="outline" size="lg">
-                  Speak with a Coordinator
+                  Speak with a Admin
                 </Button>
               </Link>
             </div>

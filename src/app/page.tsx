@@ -435,7 +435,7 @@ export default function page() {
                 <div className="absolute bottom-6 left-6 right-6 text-white">
                   <span className="text-xs uppercase font-extrabold text-brand-mint tracking-wider">Reach Out To Us</span>
                   <h4 className="text-xl font-bold mt-1">Need Urgent Shift Cover?</h4>
-                  <p className="text-xs text-brand-canvas/80 mt-1">24/7 Coordinator Hotline: <a href="tel:07565805795" className="font-bold text-white hover:text-brand-mint transition-colors">07565 805795</a></p>
+                  <p className="text-xs text-brand-canvas/80 mt-1">24/7 Admin Hotline: <a href="tel:07565805795" className="font-bold text-white hover:text-brand-mint transition-colors">07565 805795</a></p>
                 </div>
               </div>
 
@@ -448,7 +448,7 @@ export default function page() {
                   Speak With Our Staffing Team Today
                 </h2>
                 <p className="text-brand-slate text-sm leading-relaxed">
-                  Whether you need immediate sickness coverage or long-term rota support, our coordinators are available 24/7 to fulfill your workforce needs.
+                  Whether you need immediate sickness coverage or long-term rota support, our Admins are available 24/7 to fulfill your workforce needs.
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center gap-4">

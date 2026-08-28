@@ -35,12 +35,12 @@ const AVAILABILITY_OPTIONS = [
 
 export default function WorkForUsPage() {
   const [state, formAction, isPending] = useActionState(submitCandidateApplication, null);
-  
+
   // Custom states
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
   const [file, setFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
-  
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleRoleToggle = (role: string) => {
@@ -170,7 +170,7 @@ export default function WorkForUsPage() {
                 </div>
                 <h3 className="font-sans text-xl font-bold">24/7 Support</h3>
                 <p className="text-xs text-brand-slate leading-relaxed">
-                  Dedicated 24/7 coordinator support to ensure safe and organized placements.
+                  Dedicated 24/7 Admin support to ensure safe and organized placements.
                 </p>
               </HoverCard>
             </StaggerItem>
@@ -330,11 +330,10 @@ export default function WorkForUsPage() {
                         key={role}
                         type="button"
                         onClick={() => handleRoleToggle(role)}
-                        className={`flex items-center justify-between p-4 rounded-2xl border text-left text-sm font-semibold transition-all duration-200 cursor-pointer ${
-                          selectedRoles.includes(role)
+                        className={`flex items-center justify-between p-4 rounded-2xl border text-left text-sm font-semibold transition-all duration-200 cursor-pointer ${selectedRoles.includes(role)
                             ? "bg-brand-navy text-white border-brand-navy shadow-sm"
                             : "bg-white text-brand-navy border-brand-slate/20 hover:border-brand-navy"
-                        }`}
+                          }`}
                       >
                         <span>{role}</span>
                         <input
@@ -342,7 +341,7 @@ export default function WorkForUsPage() {
                           name="interestedRoles"
                           value={role}
                           checked={selectedRoles.includes(role)}
-                          onChange={() => {}}
+                          onChange={() => { }}
                           className="sr-only"
                         />
                       </button>

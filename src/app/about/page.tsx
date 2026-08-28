@@ -196,7 +196,7 @@ export default function AboutPage() {
                   Need Reliable Staff for Your Facility?
                 </h2>
                 <p className="text-brand-canvas/80 text-sm">
-                  Speak with our workforce coordinator today for immediate placement support.
+                  Speak with our workforce Admin today for immediate placement support.
                 </p>
               </div>
               <div className="relative flex items-center gap-4">

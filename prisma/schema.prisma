@@ -17,6 +17,49 @@ enum ApplicationStatus {
   ARCHIVED
 }
 
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  SUPERVISOR_1
+  SUPERVISOR_2
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model AdminUser {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique @db.VarChar(255)
+  password  String   @db.Text
+  name      String   @db.VarChar(150)
+  role      UserRole @default(SUPERVISOR_2)
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("admin_users")
+}
+
+model BlogPost {
+  id          String     @id @default(uuid()) @db.Uuid
+  slug        String     @unique @db.VarChar(200)
+  title       String     @db.VarChar(255)
+  excerpt     String     @db.Text
+  content     String     @db.Text
+  category    String     @db.VarChar(100)
+  coverImage  String?    @map("cover_image") @db.Text
+  authorName  String     @default("New Era Editorial Team") @map("author_name") @db.VarChar(100)
+  readTime    String     @default("5 min read") @map("read_time") @db.VarChar(50)
+  status      PostStatus @default(PUBLISHED)
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  @@map("blog_posts")
+}
+
 model Role {
   id        String   @id @default(uuid()) @db.Uuid
   title     String

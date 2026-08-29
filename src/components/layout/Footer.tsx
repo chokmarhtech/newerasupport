@@ -53,6 +53,11 @@ export default function Footer() {
               </Link>
             </li>
             <li>
+              <Link href="/blog" className="hover:text-brand-mint transition-colors">
+                Healthcare Blog & Insights
+              </Link>
+            </li>
+            <li>
               <Link href="/work-for-us" className="hover:text-brand-mint transition-colors">
                 Work For Us (Candidates)
               </Link>

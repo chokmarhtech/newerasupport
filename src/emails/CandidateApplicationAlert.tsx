@@ -85,7 +85,7 @@ export default function CandidateApplicationAlert({
 
               <Hr style={hr} />
               <Text style={footerText}>
-                This is an automated candidate alert sent from the New Era Support Ltd Corporate Web Portal. Please check the admin dashboard or reply directly to the candidate's email above.
+                This is an automated candidate alert sent from the New Era Support Ltd Corporate Web Portal. Please check the admin dashboard or reply directly to the candidate&apos;s email above.
               </Text>
             </Section>
           </Container>

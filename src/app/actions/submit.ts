@@ -6,6 +6,9 @@ import { prisma } from "@/lib/prisma";
 import { supabaseAdmin } from "@/lib/supabase";
 import StaffRequestAlert from "@/emails/StaffRequestAlert";
 import CandidateApplicationAlert from "@/emails/CandidateApplicationAlert";
+import ClientRequestConfirmation from "@/emails/ClientRequestConfirmation";
+import CandidateApplicationConfirmation from "@/emails/CandidateApplicationConfirmation";
+import GeneralInquiryConfirmation from "@/emails/GeneralInquiryConfirmation";
 
 // --- RESPONSE TYPE ---
 export interface ActionResponse {
@@ -83,24 +86,40 @@ export async function submitClientRequest(prevState: any, formData: FormData): P
       isMockDb = true;
     }
 
-    // Send Alert Email via Resend
+    // Parallel Dual Email Dispatch: Admin Alert + Client Confirmation Receipt
     let isMockEmail = false;
     try {
-      await resend.emails.send({
-        from: SENDER_EMAIL,
-        to: ADMIN_EMAIL,
-        subject: `🚨 [Urgent: ${validatedData.shiftUrgency}] Staffing Request - ${validatedData.organizationName}`,
-        react: StaffRequestAlert({
-          organizationName: validatedData.organizationName,
-          contactName: validatedData.contactName,
-          email: validatedData.email,
-          phone: validatedData.phone,
-          location: validatedData.location,
-          requiredRoles: validatedData.requiredRoles,
-          shiftUrgency: validatedData.shiftUrgency,
-          notes: validatedData.notes,
+      await Promise.all([
+        // 1. Admin Alert Email
+        resend.emails.send({
+          from: SENDER_EMAIL,
+          to: ADMIN_EMAIL,
+          subject: `🚨 [Urgent: ${validatedData.shiftUrgency}] Staffing Request - ${validatedData.organizationName}`,
+          react: StaffRequestAlert({
+            organizationName: validatedData.organizationName,
+            contactName: validatedData.contactName,
+            email: validatedData.email,
+            phone: validatedData.phone,
+            location: validatedData.location,
+            requiredRoles: validatedData.requiredRoles,
+            shiftUrgency: validatedData.shiftUrgency,
+            notes: validatedData.notes,
+          }),
         }),
-      });
+        // 2. Client Confirmation Receipt Email
+        resend.emails.send({
+          from: SENDER_EMAIL,
+          to: validatedData.email,
+          subject: `Staffing Request Confirmation - New Era Support Ltd`,
+          react: ClientRequestConfirmation({
+            organizationName: validatedData.organizationName,
+            contactName: validatedData.contactName,
+            requiredRoles: validatedData.requiredRoles,
+            shiftUrgency: validatedData.shiftUrgency,
+            location: validatedData.location,
+          }),
+        }),
+      ]);
     } catch (emailError) {
       console.warn("Email dispatch failed. Details:", emailError);
       isMockEmail = true;
@@ -110,7 +129,7 @@ export async function submitClientRequest(prevState: any, formData: FormData): P
       success: true,
       data: dbRecord || validatedData,
       mockMode: isMockDb || isMockEmail,
-      message: "Your staffing request has been submitted successfully.",
+      message: "Your staffing request has been submitted successfully. A confirmation receipt has been sent to your email.",
     };
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -221,24 +240,39 @@ export async function submitCandidateApplication(prevState: any, formData: FormD
       isMockDb = true;
     }
 
-    // Send Alert Email
+    // Parallel Dual Email Dispatch: Admin Alert + Candidate Confirmation Receipt
     let isMockEmail = false;
     try {
-      await resend.emails.send({
-        from: SENDER_EMAIL,
-        to: ADMIN_EMAIL,
-        subject: `💼 New Candidate Application - ${validatedData.fullName}`,
-        react: CandidateApplicationAlert({
-          fullName: validatedData.fullName,
-          email: validatedData.email,
-          phone: validatedData.phone,
-          interestedRoles: validatedData.interestedRoles,
-          hasValidDbs: validatedData.hasValidDbs,
-          hasRightToWork: validatedData.hasRightToWork,
-          resumeFileUrl,
-          availability: validatedData.availability,
+      await Promise.all([
+        // 1. Admin Alert Email
+        resend.emails.send({
+          from: SENDER_EMAIL,
+          to: ADMIN_EMAIL,
+          subject: `💼 New Candidate Application - ${validatedData.fullName}`,
+          react: CandidateApplicationAlert({
+            fullName: validatedData.fullName,
+            email: validatedData.email,
+            phone: validatedData.phone,
+            interestedRoles: validatedData.interestedRoles,
+            hasValidDbs: validatedData.hasValidDbs,
+            hasRightToWork: validatedData.hasRightToWork,
+            resumeFileUrl,
+            availability: validatedData.availability,
+          }),
         }),
-      });
+        // 2. Candidate Confirmation Receipt Email
+        resend.emails.send({
+          from: SENDER_EMAIL,
+          to: validatedData.email,
+          subject: `Application Received - Welcome to New Era Support Ltd`,
+          react: CandidateApplicationConfirmation({
+            fullName: validatedData.fullName,
+            interestedRoles: validatedData.interestedRoles,
+            availability: validatedData.availability,
+            hasValidDbs: validatedData.hasValidDbs,
+          }),
+        }),
+      ]);
     } catch (emailError) {
       console.warn("Email dispatch failed. Details:", emailError);
       isMockEmail = true;
@@ -248,7 +282,7 @@ export async function submitCandidateApplication(prevState: any, formData: FormD
       success: true,
       data: dbRecord || { ...validatedData, resumeFileUrl },
       mockMode: isMockDb || isMockEmail || isMockUpload,
-      message: "Your job application has been submitted successfully.",
+      message: "Your job application has been submitted successfully. A confirmation receipt has been sent to your email.",
     };
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -289,14 +323,16 @@ export async function submitGeneralInquiry(prevState: any, formData: FormData): 
       isMockDb = true;
     }
 
-    // Send alert email
+    // Parallel Dual Email Dispatch: Admin Alert + User Confirmation Receipt
     let isMockEmail = false;
     try {
-      await resend.emails.send({
-        from: SENDER_EMAIL,
-        to: ADMIN_EMAIL,
-        subject: `✉️ General Inquiry: ${validatedData.subject || "No Subject"} - ${validatedData.fullName}`,
-        text: `
+      await Promise.all([
+        // 1. Admin Alert Email
+        resend.emails.send({
+          from: SENDER_EMAIL,
+          to: ADMIN_EMAIL,
+          subject: `✉️ General Inquiry: ${validatedData.subject || "No Subject"} - ${validatedData.fullName}`,
+          text: `
 Name: ${validatedData.fullName}
 Email: ${validatedData.email}
 Phone: ${validatedData.phone || "N/A"}
@@ -304,8 +340,20 @@ Subject: ${validatedData.subject || "N/A"}
 
 Message:
 ${validatedData.message}
-        `,
-      });
+          `,
+        }),
+        // 2. User Confirmation Receipt Email
+        resend.emails.send({
+          from: SENDER_EMAIL,
+          to: validatedData.email,
+          subject: `We Have Received Your Message - New Era Support Ltd`,
+          react: GeneralInquiryConfirmation({
+            fullName: validatedData.fullName,
+            subject: validatedData.subject || undefined,
+            message: validatedData.message,
+          }),
+        }),
+      ]);
     } catch (emailError) {
       console.warn("Email dispatch failed. Details:", emailError);
       isMockEmail = true;
@@ -315,7 +363,7 @@ ${validatedData.message}
       success: true,
       data: dbRecord || validatedData,
       mockMode: isMockDb || isMockEmail,
-      message: "Your message has been sent successfully.",
+      message: "Your message has been sent successfully. A confirmation receipt has been sent to your email.",
     };
   } catch (error) {
     if (error instanceof z.ZodError) {

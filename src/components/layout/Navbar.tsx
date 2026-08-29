@@ -74,6 +74,12 @@ export default function Navbar() {
             Our Services
           </Link>
           <Link
+            href="/blog"
+            className="text-brand-slate hover:text-brand-navy transition-colors text-sm"
+          >
+            Blog
+          </Link>
+          <Link
             href="/work-for-us"
             className="text-brand-slate hover:text-brand-navy transition-colors text-sm"
           >
@@ -153,6 +159,17 @@ export default function Navbar() {
                         className="text-brand-navy hover:text-brand-mint py-2.5 px-3 rounded-xl hover:bg-brand-canvas transition-colors text-base font-bold flex items-center"
                       >
                         <span>Our Services</span>
+                      </Link>
+                    </SheetClose>
+                  </StaggerItem>
+
+                  <StaggerItem>
+                    <SheetClose asChild>
+                      <Link
+                        href="/blog"
+                        className="text-brand-navy hover:text-brand-mint py-2.5 px-3 rounded-xl hover:bg-brand-canvas transition-colors text-base font-bold flex items-center"
+                      >
+                        <span>Blog Insights</span>
                       </Link>
                     </SheetClose>
                   </StaggerItem>

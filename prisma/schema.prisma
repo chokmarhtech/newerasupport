@@ -14,6 +14,8 @@ enum ApplicationStatus {
   NEW
   REVIEWED
   CONTACTED
+  ONBOARDING_SENT
+  ONBOARDING_COMPLETED
   ARCHIVED
 }
 
@@ -60,6 +62,16 @@ model BlogPost {
   @@map("blog_posts")
 }
 
+model BlogCategory {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique @db.VarChar(100)
+  slug      String   @unique @db.VarChar(100)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("blog_categories")
+}
+
 model Role {
   id        String   @id @default(uuid()) @db.Uuid
   title     String
@@ -87,19 +99,72 @@ model ClientRequest {
 }
 
 model CandidateApplication {
-  id              String            @id @default(uuid()) @db.Uuid
-  fullName        String            @map("full_name") @db.VarChar(120)
-  email           String            @db.VarChar(255)
-  phone           String            @db.VarChar(50)
-  interestedRoles String[]          @map("interested_roles")
-  hasValidDbs     Boolean           @default(false) @map("has_valid_dbs")
-  hasRightToWork  Boolean           @default(true) @map("has_right_to_work")
-  resumeFileUrl   String            @map("resume_file_url") @db.Text
-  availability    String?           @db.VarChar(50) // 'Full-Time', 'Part-Time', 'Nights/Weekends'
-  status          ApplicationStatus @default(NEW)
-  createdAt       DateTime          @default(now()) @map("created_at")
+  id              String                @id @default(uuid()) @db.Uuid
+  fullName        String                @map("full_name") @db.VarChar(120)
+  email           String                @db.VarChar(255)
+  phone           String                @db.VarChar(50)
+  interestedRoles String[]              @map("interested_roles")
+  hasValidDbs     Boolean               @default(false) @map("has_valid_dbs")
+  hasRightToWork  Boolean               @default(true) @map("has_right_to_work")
+  resumeFileUrl   String                @map("resume_file_url") @db.Text
+  availability    String?               @db.VarChar(50) // 'Full-Time', 'Part-Time', 'Nights/Weekends'
+  status          ApplicationStatus     @default(NEW)
+  createdAt       DateTime              @default(now()) @map("created_at")
+  fullProfile     FullCandidateProfile?
 
   @@map("candidate_applications")
+}
+
+model FullCandidateProfile {
+  id                String               @id @default(uuid()) @db.Uuid
+  candidateId       String               @unique @map("candidate_id") @db.Uuid
+  candidate         CandidateApplication @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  // Step 1: Personal Details
+  dateOfBirth       DateTime             @map("date_of_birth")
+  gender            String               @db.VarChar(50)
+  telephone         String               @db.VarChar(50)
+  address           String               @db.Text
+  postcode          String               @db.VarChar(20)
+
+  // Step 2: References
+  ref1FullName      String               @map("ref1_full_name") @db.VarChar(120)
+  ref1Organisation  String               @map("ref1_organisation") @db.VarChar(150)
+  ref1Position      String               @map("ref1_position") @db.VarChar(100)
+  ref1Telephone     String               @map("ref1_telephone") @db.VarChar(50)
+  ref1Email         String               @map("ref1_email") @db.VarChar(255)
+
+  ref2FullName      String               @map("ref2_full_name") @db.VarChar(120)
+  ref2Organisation  String               @map("ref2_organisation") @db.VarChar(150)
+  ref2Position      String               @map("ref2_position") @db.VarChar(100)
+  ref2Telephone     String               @map("ref2_telephone") @db.VarChar(50)
+  ref2Email         String               @map("ref2_email") @db.VarChar(255)
+
+  // Step 3: Document File URLs / Supabase Storage Paths
+  cvUrl             String               @map("cv_url") @db.Text
+  proofOfIdUrl      String               @map("proof_of_id_url") @db.Text
+  photoIdCardUrl    String               @map("photo_id_card_url") @db.Text
+  proofOfAddressUrl String               @map("proof_of_address_url") @db.Text
+  dbsCertificateUrl String               @map("dbs_certificate_url") @db.Text
+  qualificationsUrl String               @map("qualifications_url") @db.Text
+  otherDocumentsUrl String?              @map("other_documents_url") @db.Text
+
+  createdAt         DateTime             @default(now()) @map("created_at")
+  updatedAt         DateTime             @updatedAt @map("updated_at")
+
+  @@map("full_candidate_profiles")
+}
+
+model OnboardingToken {
+  id          String   @id @default(uuid()) @db.Uuid
+  token       String   @unique @db.VarChar(100)
+  email       String   @db.VarChar(255)
+  candidateId String   @map("candidate_id") @db.Uuid
+  expiresAt   DateTime @map("expires_at")
+  used        Boolean  @default(false)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("onboarding_tokens")
 }
 
 model GeneralInquiry {

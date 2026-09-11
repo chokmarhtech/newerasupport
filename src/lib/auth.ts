@@ -65,7 +65,7 @@ export async function setAdminSession(session: AdminSession) {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    maxAge: 20 * 60, // 20 minutes (CQC & GDPR idle timeout)
     path: "/",
   });
 }
@@ -75,10 +75,7 @@ export async function clearAdminSession() {
   cookieStore.delete(SESSION_COOKIE_NAME);
 }
 
-// Role permission check matrix
-export function canManageTeam(role: UserRole): boolean {
-  return role === "SUPER_ADMIN" || role === "ADMIN";
-}
+export { canManageTeam } from "@/constants/admin";
 
 export function canUpdateStatus(role: UserRole): boolean {
   return role === "SUPER_ADMIN" || role === "ADMIN" || role === "SUPERVISOR_1" || role === "SUPERVISOR_2";

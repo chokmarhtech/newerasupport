@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import QueryProvider from "@/providers/QueryProvider";
+import CookieConsentBanner from "@/components/ui/CookieConsentBanner";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta-sans",
@@ -39,7 +40,7 @@ const jsonLdSchema = {
   "image": "https://newerasupport.co.uk/logos/logo-1.png",
   "logo": "https://newerasupport.co.uk/logos/logo-1.png",
   "url": "https://newerasupport.co.uk",
-  "telephone": "07565805795",
+  "telephone": "07950850970",
   "email": "info@newerasupport.co.uk",
   "priceRange": "££",
   "address": {
@@ -90,6 +91,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <QueryProvider>
           {children}
         </QueryProvider>
+        <CookieConsentBanner />
         <Analytics />
       </body>
     </html>

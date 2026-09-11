@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { Menu, ArrowRight, Phone, Mail, ShieldCheck, Clock, MapPin } from "lucide-react";
 import Button from "../ui/button";
 import {
@@ -14,9 +15,11 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { StaggerContainer, StaggerItem } from "@/components/ui/motion";
+import { NAV_ITEMS, COMPANY_CONTACT } from "@/constants/website";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-brand-canvas shadow-sm">
@@ -26,10 +29,10 @@ export default function Navbar() {
           <div className="flex items-center gap-6 text-brand-canvas/80">
             <span className="flex items-center gap-1.5 font-medium">
               <Phone className="w-3.5 h-3.5 text-brand-mint" /> 
-              24/7 Rapid Deployment: <a href="tel:07565805795" className="text-white hover:text-brand-mint font-bold transition-colors">07565 805795</a>
+              24/7 Rapid Deployment: <a href={COMPANY_CONTACT.telLink} className="text-white hover:text-brand-mint font-bold transition-colors">{COMPANY_CONTACT.phone}</a>
             </span>
             <span className="hidden md:flex items-center gap-1.5 font-medium">
-              <Mail className="w-3.5 h-3.5 text-brand-mint" /> info@newerasupport.co.uk
+              <Mail className="w-3.5 h-3.5 text-brand-mint" /> {COMPANY_CONTACT.email}
             </span>
           </div>
           <div className="flex items-center gap-2 text-brand-mint font-semibold text-[11px] uppercase tracking-wider">
@@ -46,51 +49,31 @@ export default function Navbar() {
           <Image
             src="/logos/logo-1.png"
             alt="New Era Support Limited Logo"
-            width={240}
+            width={200}
             height={60}
-            className="h-8 sm:h-10 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            className="h-6 sm:h-8 md:h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
             priority
           />
         </Link>
 
         {/* DESKTOP NAV LINKS */}
         <nav className="hidden md:flex items-center gap-8 font-semibold">
-          <Link
-            href="/"
-            className="text-brand-navy hover:text-brand-mint transition-colors text-sm"
-          >
-            Home
-          </Link>
-          <Link
-            href="/about"
-            className="text-brand-slate hover:text-brand-navy transition-colors text-sm"
-          >
-            About Us
-          </Link>
-          <Link
-            href="/services"
-            className="text-brand-slate hover:text-brand-navy transition-colors text-sm"
-          >
-            Our Services
-          </Link>
-          <Link
-            href="/blog"
-            className="text-brand-slate hover:text-brand-navy transition-colors text-sm"
-          >
-            Blog
-          </Link>
-          <Link
-            href="/work-for-us"
-            className="text-brand-slate hover:text-brand-navy transition-colors text-sm"
-          >
-            Work For Us
-          </Link>
-          <Link
-            href="/contact"
-            className="text-brand-slate hover:text-brand-navy transition-colors text-sm"
-          >
-            Contact Us
-          </Link>
+          {NAV_ITEMS.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`transition-colors text-sm ${
+                  isActive
+                    ? "text-brand-navy font-bold"
+                    : "text-brand-slate hover:text-brand-navy"
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* DESKTOP CTA */}
@@ -130,71 +113,25 @@ export default function Navbar() {
 
                 {/* STAGGERED FRAMER MOTION MOBILE LINKS */}
                 <StaggerContainer staggerChildren={0.08} delayChildren={0.15} className="flex flex-col gap-2 font-semibold">
-                  <StaggerItem>
-                    <SheetClose asChild>
-                      <Link
-                        href="/"
-                        className="text-brand-navy hover:text-brand-mint py-2.5 px-3 rounded-xl hover:bg-brand-canvas transition-colors text-base font-bold flex items-center"
-                      >
-                        <span>Home</span>
-                      </Link>
-                    </SheetClose>
-                  </StaggerItem>
-
-                  <StaggerItem>
-                    <SheetClose asChild>
-                      <Link
-                        href="/about"
-                        className="text-brand-navy hover:text-brand-mint py-2.5 px-3 rounded-xl hover:bg-brand-canvas transition-colors text-base font-bold flex items-center"
-                      >
-                        <span>About Us</span>
-                      </Link>
-                    </SheetClose>
-                  </StaggerItem>
-
-                  <StaggerItem>
-                    <SheetClose asChild>
-                      <Link
-                        href="/services"
-                        className="text-brand-navy hover:text-brand-mint py-2.5 px-3 rounded-xl hover:bg-brand-canvas transition-colors text-base font-bold flex items-center"
-                      >
-                        <span>Our Services</span>
-                      </Link>
-                    </SheetClose>
-                  </StaggerItem>
-
-                  <StaggerItem>
-                    <SheetClose asChild>
-                      <Link
-                        href="/blog"
-                        className="text-brand-navy hover:text-brand-mint py-2.5 px-3 rounded-xl hover:bg-brand-canvas transition-colors text-base font-bold flex items-center"
-                      >
-                        <span>Blog Insights</span>
-                      </Link>
-                    </SheetClose>
-                  </StaggerItem>
-
-                  <StaggerItem>
-                    <SheetClose asChild>
-                      <Link
-                        href="/work-for-us"
-                        className="text-brand-navy hover:text-brand-mint py-2.5 px-3 rounded-xl hover:bg-brand-canvas transition-colors text-base font-bold flex items-center"
-                      >
-                        <span>Work For Us</span>
-                      </Link>
-                    </SheetClose>
-                  </StaggerItem>
-
-                  <StaggerItem>
-                    <SheetClose asChild>
-                      <Link
-                        href="/contact"
-                        className="text-brand-navy hover:text-brand-mint py-2.5 px-3 rounded-xl hover:bg-brand-canvas transition-colors text-base font-bold flex items-center"
-                      >
-                        <span>Contact Us</span>
-                      </Link>
-                    </SheetClose>
-                  </StaggerItem>
+                  {NAV_ITEMS.map((item) => {
+                    const isActive = pathname === item.href;
+                    return (
+                      <StaggerItem key={item.href}>
+                        <SheetClose asChild>
+                          <Link
+                            href={item.href}
+                            className={`py-2.5 px-3 rounded-xl transition-colors text-base font-bold flex items-center ${
+                              isActive
+                                ? "text-brand-mint bg-brand-canvas"
+                                : "text-brand-navy hover:text-brand-mint hover:bg-brand-canvas"
+                            }`}
+                          >
+                            <span>{item.label}</span>
+                          </Link>
+                        </SheetClose>
+                      </StaggerItem>
+                    );
+                  })}
                 </StaggerContainer>
               </div>
 
@@ -213,12 +150,12 @@ export default function Navbar() {
                     <Clock className="w-3.5 h-3.5 text-brand-mint shrink-0" />
                     <span>24/7 Rapid Deployment Line</span>
                   </div>
-                  <a href="tel:07565805795" className="font-extrabold text-sm text-brand-navy hover:text-brand-mint transition-colors">
-                    07565 805795
-                  </a>
+                  <Link href={`tel:${COMPANY_CONTACT.phone}`} className="font-extrabold text-sm text-brand-navy hover:text-brand-mint transition-colors">
+                    {COMPANY_CONTACT.phone}
+                  </Link>
                   <div className="flex items-center gap-1.5 text-[10px] text-brand-slate pt-1 border-t border-brand-slate/10">
                     <MapPin className="w-3 h-3 text-brand-navy" />
-                    <span>Luton, Bedfordshire • UK-Wide</span>
+                    <span>{COMPANY_CONTACT.address.short}</span>
                   </div>
                 </div>
               </div>
@@ -229,3 +166,4 @@ export default function Navbar() {
     </header>
   );
 }
+

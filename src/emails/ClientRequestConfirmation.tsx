@@ -57,7 +57,7 @@ export const ClientRequestConfirmation = ({
       </Text>
 
       <Text style={paragraph}>
-        If you need to make urgent updates to this shift request, please call our 24/7 Rapid Deployment hotline directly at <strong>07565 805795</strong>.
+        If you need to make urgent updates to this shift request, please call our 24/7 Rapid Deployment hotline directly at <strong>07950 850970</strong>.
       </Text>
     </EmailLayout>
   );

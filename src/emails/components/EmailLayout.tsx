@@ -24,19 +24,21 @@ export const EmailLayout = ({ previewText, children }: EmailLayoutProps) => {
       <Preview>{previewText}</Preview>
       <Body style={main}>
         <Container style={container}>
-          {/* BRAND HEADER WITH OFFICIAL LOGO */}
+          {/* BRAND HEADER WITH OFFICIAL LOGO ON WHITE BACKGROUND */}
           <Section style={header}>
             <Img
               src="https://newerasupport.co.uk/logos/logo-1.png"
-              width="210"
-              height="52"
-              alt="New Era Support Ltd"
+              width="240"
+              height="58"
+              alt="New Era Support Limited"
               style={logo}
             />
             <Text style={headerSubtext}>
-              Healthcare, Housing & Hospitality Staffing Solutions
+              HEALTHCARE, HOUSING & HOSPITALITY STAFFING SOLUTIONS
             </Text>
           </Section>
+
+          <Hr style={headerDivider} />
 
           {/* MAIN CONTENT AREA */}
           <Section style={content}>{children}</Section>
@@ -45,9 +47,9 @@ export const EmailLayout = ({ previewText, children }: EmailLayoutProps) => {
           <Section style={helplineBanner}>
             <Text style={helplineTitle}>Need Immediate Shift Cover?</Text>
             <Text style={helplineText}>
-              24/7 Admin Hotline:{" "}
-              <Link href="tel:07565805795" style={helplineLink}>
-                07565 805795
+              24/7 Rapid Response Hotline:{" "}
+              <Link href="tel:07950850970" style={helplineLink}>
+                07950 850970
               </Link>
             </Text>
           </Section>
@@ -64,7 +66,7 @@ export const EmailLayout = ({ previewText, children }: EmailLayoutProps) => {
               <Link href="mailto:info@newerasupport.co.uk" style={footerLink}>
                 info@newerasupport.co.uk
               </Link>{" "}
-              | Tel: 07565 805795
+              | Tel: 07950 850970
             </Text>
             <Text style={footerSubtext}>
               © {new Date().getFullYear()} New Era Support Ltd. All rights reserved. CQC Aligned & 100% Safeguarding Vetted.
@@ -92,29 +94,38 @@ const container = {
 };
 
 const header = {
-  backgroundColor: "#0A192F",
-  padding: "28px 24px",
+  backgroundColor: "#ffffff",
+  padding: "32px 24px 20px 24px",
   borderRadius: "16px 16px 0 0",
+  borderTop: "4px solid #0A192F",
+  borderLeft: "1px solid #e2e8f0",
+  borderRight: "1px solid #e2e8f0",
   textAlign: "center" as const,
 };
 
 const logo = {
-  margin: "0 auto 8px text-center",
+  margin: "0 auto",
   display: "block",
 };
 
 const headerSubtext = {
-  color: "#00E699",
+  color: "#059669",
   fontSize: "11px",
-  fontWeight: 700,
+  fontWeight: 800,
   textTransform: "uppercase" as const,
-  letterSpacing: "1px",
-  margin: "6px 0 0 0",
+  letterSpacing: "1.2px",
+  margin: "12px 0 0 0",
+  textAlign: "center" as const,
+};
+
+const headerDivider = {
+  borderColor: "#e2e8f0",
+  margin: "0",
 };
 
 const content = {
   backgroundColor: "#ffffff",
-  padding: "36px 28px",
+  padding: "32px 28px 36px 28px",
   borderLeft: "1px solid #e2e8f0",
   borderRight: "1px solid #e2e8f0",
 };
@@ -127,7 +138,7 @@ const helplineBanner = {
 };
 
 const helplineTitle = {
-  color: "#00E699",
+  color: "#10B981",
   fontSize: "12px",
   fontWeight: 800,
   textTransform: "uppercase" as const,
@@ -143,7 +154,7 @@ const helplineText = {
 };
 
 const helplineLink = {
-  color: "#00E699",
+  color: "#10B981",
   textDecoration: "underline",
 };
 

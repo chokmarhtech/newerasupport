@@ -60,7 +60,7 @@ export const CandidateApplicationConfirmation = ({
       </Section>
 
       <Text style={paragraph}>
-        If you have any questions regarding your application status, feel free to reply directly to this email or call our compliance team at <strong>07565 805795</strong>.
+        If you have any questions regarding your application status, feel free to reply directly to this email or call our compliance team at <strong>07950 850970</strong>.
       </Text>
     </EmailLayout>
   );

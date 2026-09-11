@@ -104,7 +104,7 @@ export async function createBlogPostAction(formData: FormData): Promise<void> {
         },
       });
     } catch (dbErr) {
-      console.warn("Prisma blog creation failed, running in mock mode:", dbErr);
+      console.warn("Prisma blog creation failed:", dbErr);
     }
 
     revalidatePath("/blog");
@@ -114,7 +114,57 @@ export async function createBlogPostAction(formData: FormData): Promise<void> {
   }
 }
 
-// 3. TOGGLE BLOG POST STATUS ACTION
+// 3. UPDATE BLOG POST SERVER ACTION
+export async function updateBlogPostAction(id: string, formData: FormData): Promise<void> {
+  const currentSession = await getAdminSession();
+  if (!currentSession || !canPublishBlog(currentSession.role)) {
+    return;
+  }
+
+  try {
+    const rawTitle = formData.get("title") as string;
+    const rawCategory = formData.get("category") as string;
+    const rawExcerpt = formData.get("excerpt") as string;
+    const rawContent = formData.get("content") as string;
+    const rawCoverImage = (formData.get("coverImage") as string) || undefined;
+    const rawAuthor = (formData.get("authorName") as string) || "New Era Editorial Team";
+    const rawReadTime = (formData.get("readTime") as string) || "5 min read";
+
+    const validated = CreateBlogPostSchema.parse({
+      title: rawTitle,
+      category: rawCategory,
+      excerpt: rawExcerpt,
+      content: rawContent,
+      coverImage: rawCoverImage,
+      authorName: rawAuthor,
+      readTime: rawReadTime,
+    });
+
+    try {
+      await prisma.blogPost.update({
+        where: { id },
+        data: {
+          title: validated.title,
+          category: validated.category,
+          excerpt: validated.excerpt,
+          content: validated.content,
+          coverImage: validated.coverImage,
+          authorName: validated.authorName,
+          readTime: validated.readTime,
+        },
+      });
+    } catch (dbErr) {
+      console.warn("Prisma blog update failed:", dbErr);
+    }
+
+    revalidatePath("/blog");
+    revalidatePath("/admin/blog");
+  } catch (error) {
+    console.error("updateBlogPostAction error:", error);
+  }
+}
+
+// 4. TOGGLE BLOG POST STATUS ACTION
 export async function updateBlogPostStatusAction(id: string, status: any): Promise<void> {
   const currentSession = await getAdminSession();
   if (!currentSession || !canPublishBlog(currentSession.role)) {
@@ -133,7 +183,7 @@ export async function updateBlogPostStatusAction(id: string, status: any): Promi
   }
 }
 
-// 4. DELETE BLOG POST ACTION
+// 5. DELETE BLOG POST ACTION
 export async function deleteBlogPostAction(id: string): Promise<void> {
   const currentSession = await getAdminSession();
   if (!currentSession || !canPublishBlog(currentSession.role)) {
@@ -150,3 +200,80 @@ export async function deleteBlogPostAction(id: string): Promise<void> {
     console.warn("Prisma post delete failed:", err);
   }
 }
+
+// 6. BLOG CATEGORY ACTIONS
+export async function createBlogCategoryAction(formData: FormData): Promise<BlogActionResponse> {
+  const currentSession = await getAdminSession();
+  if (!currentSession || !canPublishBlog(currentSession.role)) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  try {
+    const name = (formData.get("name") as string || "").trim();
+    if (!name || name.length < 2) {
+      return { success: false, error: "Category name must be at least 2 characters" };
+    }
+
+    const slug = name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)+/g, "");
+
+    const existing = await prisma.blogCategory.findFirst({
+      where: {
+        OR: [{ name }, { slug }],
+      },
+    });
+
+    if (existing) {
+      return { success: false, error: "Category already exists" };
+    }
+
+    await prisma.blogCategory.create({
+      data: { name, slug },
+    });
+
+    revalidatePath("/blog");
+    revalidatePath("/admin/blog");
+    return { success: true, message: "Category created successfully" };
+  } catch (error: any) {
+    console.error("createBlogCategoryAction error:", error);
+    return { success: false, error: error.message || "Failed to create category" };
+  }
+}
+
+export async function deleteBlogCategoryAction(id: string): Promise<BlogActionResponse> {
+  const currentSession = await getAdminSession();
+  if (!currentSession || !canPublishBlog(currentSession.role)) {
+    return { success: false, error: "Unauthorized" };
+  }
+
+  try {
+    await prisma.blogCategory.delete({
+      where: { id },
+    });
+
+    revalidatePath("/blog");
+    revalidatePath("/admin/blog");
+    return { success: true, message: "Category deleted successfully" };
+  } catch (error: any) {
+    console.error("deleteBlogCategoryAction error:", error);
+    return { success: false, error: error.message || "Failed to delete category" };
+  }
+}
+
+export async function getBlogCategoriesAction() {
+  try {
+    if (!prisma || !prisma.blogCategory) {
+      return [];
+    }
+    const categories = await prisma.blogCategory.findMany({
+      orderBy: { name: "asc" },
+    });
+    return categories;
+  } catch (error) {
+    console.error("getBlogCategoriesAction error:", error);
+    return [];
+  }
+}
+

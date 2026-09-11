@@ -42,12 +42,17 @@ const EDITOR_EXTENSIONS = [
     heading: {
       levels: [1, 2, 3, 4, 5],
     },
-  }),
+    // Disabled here because they are configured explicitly below.
+    // StarterKit includes Link & Underline by default — passing them
+    // again would cause Tiptap "Duplicate extension names" warnings.
+    link: false,
+    underline: false,
+  } as any),
   Underline,
   Link.configure({
     openOnClick: false,
     HTMLAttributes: {
-      class: "text-emerald-400 underline cursor-pointer hover:text-emerald-300",
+      class: "text-brand-navy underline cursor-pointer hover:text-slate-900 font-bold",
     },
   }),
   Superscript,
@@ -57,7 +62,7 @@ const EDITOR_EXTENSIONS = [
   }),
   ImageExtension.configure({
     HTMLAttributes: {
-      class: "max-w-full h-auto rounded-2xl shadow-lg my-6 block mx-auto border border-slate-800",
+      class: "max-w-full h-auto rounded-2xl shadow-md my-6 block mx-auto border border-slate-200",
     },
   }),
   Highlight.configure({
@@ -81,7 +86,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
     editorProps: {
       attributes: {
         class:
-          "prose prose-invert max-w-none focus:outline-none min-h-[320px] p-5 text-slate-100 placeholder-slate-600 bg-slate-950 border border-slate-800 rounded-b-2xl focus:ring-1 focus:ring-emerald-500",
+          "prose prose-slate max-w-none focus:outline-none min-h-[320px] p-5 text-slate-800 placeholder-slate-400 bg-white border border-slate-200 rounded-b-2xl focus:ring-1 focus:ring-brand-navy font-sans",
       },
     },
   });
@@ -156,20 +161,20 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
   const getBtnClass = (isActive: boolean) => {
     const base = "p-2 rounded-lg transition-all duration-200 cursor-pointer";
     return isActive
-      ? `${base} bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30`
-      : `${base} text-slate-400 hover:bg-slate-800 hover:text-slate-100`;
+      ? `${base} bg-slate-200 text-brand-navy font-bold border border-slate-300`
+      : `${base} text-slate-600 hover:bg-slate-100 hover:text-brand-navy`;
   };
 
   return (
-    <div className="w-full rounded-2xl border border-slate-800 bg-slate-900 overflow-hidden shadow-xl">
+    <div className="w-full rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-xs">
       {/* EDITOR TOOLBAR */}
-      <div className="flex flex-wrap gap-1 items-center border-b border-slate-800 bg-slate-900/90 p-3">
+      <div className="flex flex-wrap gap-1 items-center border-b border-slate-200 bg-slate-50 p-3">
         {/* HISTORY */}
         <button
           type="button"
           onClick={() => editor.chain().focus().undo().run()}
           disabled={!editor.can().chain().focus().undo().run()}
-          className="p-2 rounded-lg hover:bg-slate-800 text-slate-400 disabled:opacity-30 cursor-pointer"
+          className="p-2 rounded-lg hover:bg-slate-200 text-slate-600 disabled:opacity-30 cursor-pointer"
           title="Undo"
         >
           <Undo className="h-4 w-4" />
@@ -179,20 +184,20 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
           type="button"
           onClick={() => editor.chain().focus().redo().run()}
           disabled={!editor.can().chain().focus().redo().run()}
-          className="p-2 rounded-lg hover:bg-slate-800 text-slate-400 disabled:opacity-30 cursor-pointer"
+          className="p-2 rounded-lg hover:bg-slate-200 text-slate-600 disabled:opacity-30 cursor-pointer"
           title="Redo"
         >
           <Redo className="h-4 w-4" />
         </button>
 
-        <div className="h-6 w-[1px] bg-slate-800 mx-1" />
+        <div className="h-6 w-[1px] bg-slate-200 mx-1" />
 
         {/* HEADINGS DROPDOWN */}
         <div className="relative">
           <button
             type="button"
             onClick={() => setShowDropdown(!showDropdown)}
-            className="flex items-center gap-1 p-2 rounded-lg text-slate-300 hover:bg-slate-800 cursor-pointer text-xs font-bold"
+            className="flex items-center gap-1 p-2 rounded-lg text-slate-700 hover:bg-slate-200 cursor-pointer text-xs font-bold"
             title="Headings"
           >
             <span>H</span>
@@ -200,18 +205,18 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
           </button>
 
           {showDropdown && (
-            <div className="absolute left-0 top-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-1 shadow-2xl z-50 flex flex-col min-w-[130px]">
+            <div className="absolute left-0 top-full mt-1 bg-white border border-slate-200 rounded-xl p-1 shadow-xl z-50 flex flex-col min-w-[130px]">
               <button
                 type="button"
                 onClick={() => {
                   editor.chain().focus().setParagraph().run();
                   setShowDropdown(false);
                 }}
-                className="px-3 py-1.5 text-xs text-left hover:bg-slate-800 rounded-lg text-slate-200"
+                className="px-3 py-1.5 text-xs text-left hover:bg-slate-100 rounded-lg text-slate-700"
               >
                 Paragraph
               </button>
-              <div className="h-[1px] bg-slate-800 my-1" />
+              <div className="h-[1px] bg-slate-100 my-1" />
               {([1, 2, 3, 4, 5] as const).map((level) => (
                 <button
                   key={level}
@@ -220,10 +225,10 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
                     editor.chain().focus().toggleHeading({ level }).run();
                     setShowDropdown(false);
                   }}
-                  className={`px-3 py-1.5 text-xs text-left hover:bg-slate-800 rounded-lg ${
+                  className={`px-3 py-1.5 text-xs text-left hover:bg-slate-100 rounded-lg ${
                     editor.isActive("heading", { level })
-                      ? "bg-emerald-500/20 text-emerald-300 font-bold"
-                      : "text-slate-300"
+                      ? "bg-slate-200 text-brand-navy font-bold"
+                      : "text-slate-700"
                   }`}
                 >
                   Heading {level}
@@ -260,7 +265,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
           <Quote className="h-4 w-4" />
         </button>
 
-        <div className="h-6 w-[1px] bg-slate-800 mx-1" />
+        <div className="h-6 w-[1px] bg-slate-200 mx-1" />
 
         {/* CHARACTER STYLES */}
         <button
@@ -311,18 +316,18 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
           </button>
 
           {showLinkInput && (
-            <div className="absolute left-0 top-full mt-2 bg-slate-900 rounded-2xl border border-slate-800 p-4 shadow-2xl z-50 flex items-center gap-2 min-w-[280px]">
+            <div className="absolute left-0 top-full mt-2 bg-white rounded-2xl border border-slate-200 p-4 shadow-xl z-50 flex items-center gap-2 min-w-[280px]">
               <input
                 type="text"
                 value={linkUrl}
                 onChange={(e) => setLinkUrl(e.target.value)}
                 placeholder="Enter URL (https://...)"
-                className="flex-1 h-9 rounded-xl border border-slate-700 px-3 text-xs bg-slate-950 text-white"
+                className="flex-1 h-9 rounded-xl border border-slate-200 px-3 text-xs bg-slate-50 text-slate-800"
               />
               <button
                 type="button"
                 onClick={handleApplyLink}
-                className="h-9 px-3 rounded-xl bg-emerald-500 text-slate-950 text-xs font-bold"
+                className="h-9 px-3 rounded-xl bg-brand-navy text-white text-xs font-bold"
               >
                 Apply
               </button>
@@ -330,7 +335,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
           )}
         </div>
 
-        <div className="h-6 w-[1px] bg-slate-800 mx-1" />
+        <div className="h-6 w-[1px] bg-slate-200 mx-1" />
 
         {/* ALIGNMENT */}
         <button
@@ -360,14 +365,14 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
           <AlignRight className="h-4 w-4" />
         </button>
 
-        <div className="h-6 w-[1px] bg-slate-800 mx-1" />
+        <div className="h-6 w-[1px] bg-slate-200 mx-1" />
 
         {/* IMAGE UPLOAD */}
         <div className="relative">
           <button
             type="button"
             onClick={() => setShowImageInput(!showImageInput)}
-            className="flex items-center gap-1.5 p-2 rounded-lg text-emerald-400 hover:bg-slate-800 cursor-pointer text-xs font-bold"
+            className="flex items-center gap-1.5 p-2 rounded-lg text-brand-navy hover:bg-slate-200 cursor-pointer text-xs font-bold"
             title="Insert Image"
           >
             <ImageIcon className="h-4 w-4" />
@@ -375,8 +380,8 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
           </button>
 
           {showImageInput && (
-            <div className="absolute right-0 top-full mt-2 bg-slate-900 rounded-2xl border border-slate-800 p-4 shadow-2xl z-50 flex flex-col gap-3 min-w-[300px]">
-              <span className="text-xs font-bold text-white">Insert Image into Article</span>
+            <div className="absolute right-0 top-full mt-2 bg-white rounded-2xl border border-slate-200 p-4 shadow-xl z-50 flex flex-col gap-3 min-w-[300px]">
+              <span className="text-xs font-bold text-slate-800">Insert Image into Article</span>
 
               <input
                 type="file"
@@ -389,26 +394,26 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
               <button
                 type="button"
                 onClick={() => document.getElementById("editor-image-file")?.click()}
-                className="flex items-center justify-center gap-2 h-10 rounded-xl border border-dashed border-slate-700 hover:border-emerald-500 bg-slate-950 text-xs font-semibold text-slate-300 hover:text-white cursor-pointer transition-colors"
+                className="flex items-center justify-center gap-2 h-10 rounded-xl border border-dashed border-slate-300 hover:border-brand-navy bg-slate-50 text-xs font-semibold text-slate-700 hover:text-brand-navy cursor-pointer transition-colors"
                 disabled={isUploadingImage}
               >
                 {isUploadingImage ? (
                   <>
-                    <Loader2 className="h-4 w-4 animate-spin text-emerald-400" />
-                    <span>Compressing & Uploading...</span>
+                    <Loader2 className="h-4 w-4 animate-spin text-brand-navy" />
+                    <span>Uploading...</span>
                   </>
                 ) : (
                   <>
-                    <Upload className="h-4 w-4 text-emerald-400" />
+                    <Upload className="h-4 w-4 text-brand-navy" />
                     <span>Upload Image File</span>
                   </>
                 )}
               </button>
 
               <div className="flex items-center gap-2">
-                <div className="h-[1px] bg-slate-800 flex-1" />
-                <span className="text-[10px] text-slate-500 font-bold">OR URL</span>
-                <div className="h-[1px] bg-slate-800 flex-1" />
+                <div className="h-[1px] bg-slate-200 flex-1" />
+                <span className="text-[10px] text-slate-400 font-bold">OR URL</span>
+                <div className="h-[1px] bg-slate-200 flex-1" />
               </div>
 
               <div className="flex gap-2">
@@ -417,12 +422,12 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
                   value={imageUrl}
                   onChange={(e) => setImageUrl(e.target.value)}
                   placeholder="Paste URL (https://...)"
-                  className="flex-1 h-9 rounded-xl border border-slate-700 px-3 text-xs bg-slate-950 text-white"
+                  className="flex-1 h-9 rounded-xl border border-slate-200 px-3 text-xs bg-slate-50 text-slate-800"
                 />
                 <button
                   type="button"
                   onClick={handleInsertImage}
-                  className="h-9 px-3 rounded-xl bg-emerald-500 text-slate-950 text-xs font-bold"
+                  className="h-9 px-3 rounded-xl bg-brand-navy text-white text-xs font-bold"
                 >
                   Add
                 </button>
@@ -433,7 +438,7 @@ export default function RichTextEditor({ content, onChange }: RichTextEditorProp
       </div>
 
       {/* EDITOR CONTENT CANVAS */}
-      <div className="bg-slate-950">
+      <div className="bg-white">
         <EditorContent editor={editor} />
       </div>
     </div>

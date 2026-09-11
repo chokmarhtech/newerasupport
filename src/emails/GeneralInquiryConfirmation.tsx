@@ -36,7 +36,7 @@ export const GeneralInquiryConfirmation = ({
       </Section>
 
       <Text style={paragraph}>
-        If your request is urgent or requires immediate shift cover, please call our 24/7 Rapid Deployment Line directly at <strong>07565 805795</strong>.
+        If your request is urgent or requires immediate shift cover, please call our 24/7 Rapid Deployment Line directly at <strong>07950 850970</strong>.
       </Text>
     </EmailLayout>
   );

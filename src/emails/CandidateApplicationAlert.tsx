@@ -1,16 +1,6 @@
 import React from "react";
-import {
-  Html,
-  Head,
-  Preview,
-  Body,
-  Container,
-  Section,
-  Heading,
-  Text,
-  Hr,
-  Link,
-} from "@react-email/components";
+import { Heading, Text, Hr, Link, Section } from "@react-email/components";
+import EmailLayout from "./components/EmailLayout";
 
 interface CandidateApplicationAlertProps {
   fullName: string;
@@ -34,174 +24,145 @@ export default function CandidateApplicationAlert({
   availability = "Full-Time",
 }: CandidateApplicationAlertProps) {
   return (
-    Html && (
-      <Html>
-        <Head />
-        <Preview>New Candidate Application: {fullName}</Preview>
-        <Body style={main}>
-          <Container style={container}>
-            <Section style={header}>
-              <Heading style={headerTitle}>NEW ERA SUPPORT LTD</Heading>
-              <Text style={headerSub}>Candidate Application Alert</Text>
-            </Section>
+    <EmailLayout previewText={`New Candidate Application: ${fullName}`}>
+      <Heading style={heading}>Candidate Application Alert</Heading>
+      <Text style={subheading}>
+        A new candidate application has been received from the web portal.
+      </Text>
 
-            <Section style={content}>
-              <Heading style={sectionTitle}>Candidate Contact Information</Heading>
-              <Text style={itemText}><strong>Full Name:</strong> {fullName}</Text>
-              <Text style={itemText}><strong>Email Address:</strong> <Link href={`mailto:${email}`} style={link}>{email}</Link></Text>
-              <Text style={itemText}><strong>Phone Number:</strong> {phone}</Text>
-              <Text style={itemText}><strong>Preferred Availability:</strong> {availability}</Text>
+      <Section style={card}>
+        <Text style={cardTitle}>Candidate Contact Information</Text>
+        <Text style={itemText}><strong>Full Name:</strong> {fullName}</Text>
+        <Text style={itemText}>
+          <strong>Email Address:</strong>{" "}
+          <Link href={`mailto:${email}`} style={link}>{email}</Link>
+        </Text>
+        <Text style={itemText}><strong>Phone Number:</strong> {phone}</Text>
+        <Text style={itemText}><strong>Preferred Availability:</strong> {availability}</Text>
+      </Section>
 
-              <Hr style={hr} />
+      <Section style={card}>
+        <Text style={cardTitle}>Roles of Interest</Text>
+        <Text style={itemText}>{interestedRoles.join(", ")}</Text>
+      </Section>
 
-              <Heading style={sectionTitle}>Roles of Interest</Heading>
-              <Text style={itemText}>{interestedRoles.join(", ")}</Text>
+      <Section style={card}>
+        <Text style={cardTitle}>Vetting & Compliance Check</Text>
+        <Text style={itemText}>
+          <strong>Enhanced DBS Check:</strong>{" "}
+          <span style={hasValidDbs ? passPill : failPill}>
+            {hasValidDbs ? "Vetted / Valid DBS" : "Needs DBS Check"}
+          </span>
+        </Text>
+        <Text style={itemText}>
+          <strong>UK Right-To-Work:</strong>{" "}
+          <span style={hasRightToWork ? passPill : failPill}>
+            {hasRightToWork ? "Confirmed" : "Awaiting Proof"}
+          </span>
+        </Text>
+      </Section>
 
-              <Hr style={hr} />
+      <Section style={card}>
+        <Text style={cardTitle}>Attached Documents</Text>
+        <Text style={itemText}>
+          <strong>Resume / CV:</strong>{" "}
+          <Link href={resumeFileUrl} style={button}>
+            View / Download Resume
+          </Link>
+        </Text>
+      </Section>
 
-              <Heading style={sectionTitle}>Vetting & Compliance Check</Heading>
-              <Text style={itemText}>
-                <strong>Enhanced DBS Check Status:</strong>{" "}
-                <span style={hasValidDbs ? passPill : failPill}>
-                  {hasValidDbs ? "Vetted / Valid DBS" : "Needs DBS Check"}
-                </span>
-              </Text>
-              <Text style={itemText}>
-                <strong>UK Right-To-Work Confirmed:</strong>{" "}
-                <span style={hasRightToWork ? passPill : failPill}>
-                  {hasRightToWork ? "Confirmed" : "Awaiting Proof"}
-                </span>
-              </Text>
-
-              <Hr style={hr} />
-
-              <Heading style={sectionTitle}>Attached Documents</Heading>
-              <Text style={itemText}>
-                <strong>Resume / CV:</strong>{" "}
-                <Link href={resumeFileUrl} style={button}>
-                  View / Download Resume
-                </Link>
-              </Text>
-
-              <Hr style={hr} />
-              <Text style={footerText}>
-                This is an automated candidate alert sent from the New Era Support Ltd Corporate Web Portal. Please check the admin dashboard or reply directly to the candidate&apos;s email above.
-              </Text>
-            </Section>
-          </Container>
-        </Body>
-      </Html>
-    )
+      <Hr style={hr} />
+      <Text style={footerNote}>
+        This is an automated candidate alert sent from the New Era Support Ltd Corporate Web Portal. Log into your Admin Portal to review or send full onboarding documents.
+      </Text>
+    </EmailLayout>
   );
 }
 
 // --- Email Styles ---
-const main = {
-  backgroundColor: "#F7F7F7",
-  fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+const heading = {
+  fontSize: "22px",
+  fontWeight: "800",
+  color: "#0A192F",
+  marginBottom: "4px",
 };
 
-const container = {
-  backgroundColor: "#ffffff",
-  border: "1px solid #e0e0e0",
-  borderRadius: "16px",
-  margin: "40px auto",
-  maxWidth: "600px",
-  overflow: "hidden",
+const subheading = {
+  fontSize: "13px",
+  color: "#64748b",
+  marginBottom: "20px",
 };
 
-const header = {
-  backgroundColor: "#1E1958",
-  padding: "32px",
-  textAlign: "center" as const,
+const card = {
+  backgroundColor: "#f8fafc",
+  padding: "16px 20px",
+  borderRadius: "12px",
+  border: "1px solid #e2e8f0",
+  marginBottom: "16px",
 };
 
-const headerTitle = {
-  color: "#ffffff",
-  fontSize: "24px",
-  fontWeight: "bold",
-  margin: "0",
-  letterSpacing: "2px",
-};
-
-const headerSub = {
-  color: "#84E5A4",
-  fontSize: "14px",
-  fontWeight: "600",
-  textTransform: "uppercase" as const,
-  letterSpacing: "1px",
-  margin: "8px 0 0 0",
-};
-
-const content = {
-  padding: "40px 32px",
-};
-
-const sectionTitle = {
-  color: "#1E1958",
-  fontSize: "16px",
-  fontWeight: "bold",
+const cardTitle = {
+  color: "#0A192F",
+  fontSize: "13px",
+  fontWeight: "700",
   textTransform: "uppercase" as const,
   letterSpacing: "0.5px",
-  marginBottom: "12px",
+  margin: "0 0 10px 0",
 };
 
 const itemText = {
-  color: "#4A5E7A",
-  fontSize: "14px",
-  lineHeight: "1.5",
-  margin: "8px 0",
+  color: "#334155",
+  fontSize: "13px",
+  lineHeight: "20px",
+  margin: "6px 0",
 };
 
 const link = {
-  color: "#1E1958",
+  color: "#0A192F",
   textDecoration: "underline",
 };
 
 const button = {
-  backgroundColor: "#1E1958",
-  borderRadius: "4px",
+  backgroundColor: "#0A192F",
+  borderRadius: "8px",
   color: "#ffffff",
   display: "inline-block",
-  fontSize: "13px",
+  fontSize: "12px",
   fontWeight: "bold",
-  lineHeight: "1.6",
-  padding: "10px 16px",
+  padding: "8px 14px",
   textDecoration: "none",
-  textAlign: "center" as const,
-  marginTop: "6px",
+  marginLeft: "6px",
 };
 
 const hr = {
-  borderColor: "#e0e0e0",
-  margin: "24px 0",
+  borderColor: "#cbd5e1",
+  margin: "20px 0 12px 0",
 };
 
 const passPill = {
-  backgroundColor: "#D1FAE5",
-  color: "#065F46",
-  padding: "4px 8px",
-  borderRadius: "4px",
-  fontSize: "12px",
+  backgroundColor: "#d1fae5",
+  color: "#065f46",
+  padding: "3px 8px",
+  borderRadius: "6px",
+  fontSize: "11px",
   fontWeight: "bold",
   display: "inline-block",
 };
 
 const failPill = {
-  backgroundColor: "#FEE2E2",
-  color: "#991B1B",
-  padding: "4px 8px",
-  borderRadius: "4px",
-  fontSize: "12px",
+  backgroundColor: "#fee2e2",
+  color: "#991b1b",
+  padding: "3px 8px",
+  borderRadius: "6px",
+  fontSize: "11px",
   fontWeight: "bold",
   display: "inline-block",
 };
 
-const footerText = {
-  color: "#4A5E7A",
+const footerNote = {
+  color: "#64748b",
   fontSize: "11px",
-  lineHeight: "1.5",
+  lineHeight: "16px",
   textAlign: "center" as const,
-  marginTop: "24px",
-  opacity: "0.7",
 };

@@ -1,7 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Phone, Mail, MapPin, ShieldCheck, Heart } from "lucide-react";
+import { Phone, Mail, MapPin, ShieldCheck } from "lucide-react";
+import { FOOTER_NAV_ITEMS, LEGAL_NAV_ITEMS, COMPANY_CONTACT } from "@/constants/website";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -37,41 +38,13 @@ export default function Footer() {
             Site Navigation
           </h4>
           <ul className="flex flex-col gap-3 text-sm text-brand-canvas/80 font-medium">
-            <li>
-              <Link href="/" className="hover:text-brand-mint transition-colors">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link href="/about" className="hover:text-brand-mint transition-colors">
-                About Us
-              </Link>
-            </li>
-            <li>
-              <Link href="/services" className="hover:text-brand-mint transition-colors">
-                Our Services
-              </Link>
-            </li>
-            <li>
-              <Link href="/blog" className="hover:text-brand-mint transition-colors">
-                Healthcare Blog & Insights
-              </Link>
-            </li>
-            <li>
-              <Link href="/work-for-us" className="hover:text-brand-mint transition-colors">
-                Work For Us (Candidates)
-              </Link>
-            </li>
-            <li>
-              <Link href="/request-staff" className="hover:text-brand-mint transition-colors">
-                Request Staff (Clients)
-              </Link>
-            </li>
-            <li>
-              <Link href="/contact" className="hover:text-brand-mint transition-colors">
-                Contact Us
-              </Link>
-            </li>
+            {FOOTER_NAV_ITEMS.map((item) => (
+              <li key={item.href}>
+                <Link href={item.href} className="hover:text-brand-mint transition-colors">
+                  {item.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -97,22 +70,24 @@ export default function Footer() {
             <li className="flex items-start gap-3">
               <Phone className="w-5 h-5 text-brand-mint shrink-0 mt-0.5" />
               <div>
-                <a href="tel:07565805795" className="block font-bold text-white hover:text-brand-mint transition-colors">07565 805795</a>
+                <a href={COMPANY_CONTACT.telLink} className="block font-bold text-white hover:text-brand-mint transition-colors">
+                  {COMPANY_CONTACT.phone}
+                </a>
                 <span className="text-xs text-brand-canvas/50">24/7 Rapid Deployment Line</span>
               </div>
             </li>
             <li className="flex items-center gap-3">
               <Mail className="w-5 h-5 text-brand-mint shrink-0" />
-              <a href="mailto:info@newerasupport.co.uk" className="hover:text-brand-mint transition-colors">
-                info@newerasupport.co.uk
+              <a href={COMPANY_CONTACT.emailLink} className="hover:text-brand-mint transition-colors">
+                {COMPANY_CONTACT.email}
               </a>
             </li>
             <li className="flex items-start gap-3">
               <MapPin className="w-5 h-5 text-brand-mint shrink-0 mt-0.5" />
               <span className="leading-normal">
-                New Era Support Ltd<br />
-                Flat 10 The Compasses, 11 Farley Hill,<br />
-                Luton, Bedfordshire
+                {COMPANY_CONTACT.address.name}<br />
+                {COMPANY_CONTACT.address.line1},<br />
+                {COMPANY_CONTACT.address.line2}
               </span>
             </li>
           </ul>
@@ -122,17 +97,14 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-brand-canvas/10 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-brand-canvas/50">
         <p>&copy; {currentYear} New Era Support Ltd. Registered in England & Wales. All rights reserved.</p>
         <div className="flex gap-6">
-          <Link href="/privacy" className="hover:text-brand-mint transition-colors">
-            Privacy Policy
-          </Link>
-          <Link href="/slavery-statement" className="hover:text-brand-mint transition-colors">
-            Modern Slavery Statement
-          </Link>
-          <Link href="/terms" className="hover:text-brand-mint transition-colors">
-            Terms of Service
-          </Link>
+          {LEGAL_NAV_ITEMS.map((item) => (
+            <Link key={item.href} href={item.href} className="hover:text-brand-mint transition-colors">
+              {item.label}
+            </Link>
+          ))}
         </div>
       </div>
     </footer>
   );
 }
+

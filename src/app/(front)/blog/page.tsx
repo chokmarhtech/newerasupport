@@ -14,6 +14,76 @@ export const metadata = {
     "Read the latest healthcare staffing insights, CQC safeguarding guides, housing support trends, and agency updates from New Era Support Ltd.",
 };
 
+const DEFAULT_FALLBACK_POSTS = [
+  {
+    id: "fallback-1",
+    slug: "effective-cqc-safeguarding-strategies-for-care-homes",
+    title: "Effective CQC Safeguarding Strategies for UK Care Homes in 2026",
+    category: "Safeguarding Updates",
+    excerpt:
+      "A practical operational blueprint for care home managers to ensure 100% CQC safeguarding audit readiness while maintaining rapid emergency shift cover.",
+    coverImage: "/images/blog/cqc-safeguarding.jpg",
+    authorName: "New Era Compliance Team",
+    readTime: "6 min read",
+    createdAt: new Date(),
+  },
+  {
+    id: "fallback-2",
+    slug: "winter-surge-preparation-care-homes-2026",
+    title: "Winter Surge Staffing: Managing Capacity Pressures in Residential Care",
+    category: "Healthcare Insights",
+    excerpt:
+      "Actionable strategies for care coordinators and nursing managers to navigate winter respiratory surges, bed capacity spikes, and emergency rota gaps.",
+    coverImage: "/images/blog/winter-surge-prep.jpg",
+    authorName: "Workforce Operations Team",
+    readTime: "5 min read",
+    createdAt: new Date(Date.now() - 86400000 * 2),
+  },
+  {
+    id: "fallback-3",
+    slug: "managing-urgent-shift-shortages-in-residential-care",
+    title: "How Care Managers Can Manage Urgent Shift Shortages in Luton & Bedfordshire",
+    category: "Staffing Advice",
+    excerpt:
+      "Operational strategies for care managers facing last-minute shift cancellations to ensure zero disruption in resident care.",
+    coverImage: "/images/blog/emergency-staffing.jpg",
+    authorName: "Workforce Operations Team",
+    readTime: "4 min read",
+    createdAt: new Date(Date.now() - 86400000 * 4),
+  },
+  {
+    id: "fallback-4",
+    slug: "supported-housing-pathways-vulnerable-adults",
+    title: "Supported Housing Staffing: Fostering Independence in Vulnerable Adults",
+    category: "Housing & Community",
+    excerpt:
+      "A guide for supported living providers on deploying qualified support workers who balance risk management with resident empowerment.",
+    coverImage: "/images/blog/supported-housing.jpg",
+    authorName: "Housing Services Lead",
+    readTime: "5 min read",
+    createdAt: new Date(Date.now() - 86400000 * 7),
+  },
+  {
+    id: "fallback-5",
+    slug: "starting-a-healthcare-assistant-career-uk",
+    title: "Starting a Healthcare Assistant Career in the UK: Qualifications & Pathways",
+    category: "Staffing Advice",
+    excerpt:
+      "Everything aspiring care workers need to know about Care Certificate requirements, mandatory training, and career progression in the care sector.",
+    coverImage: "/images/blog/hca-career.jpg",
+    authorName: "Recruitment & Onboarding Team",
+    readTime: "7 min read",
+    createdAt: new Date(Date.now() - 86400000 * 10),
+  },
+];
+
+const DEFAULT_FALLBACK_CATEGORIES = [
+  { id: "cat-1", name: "Healthcare Insights", slug: "healthcare-insights" },
+  { id: "cat-2", name: "Safeguarding Updates", slug: "safeguarding-updates" },
+  { id: "cat-3", name: "Staffing Advice", slug: "staffing-advice" },
+  { id: "cat-4", name: "Housing & Community", slug: "housing-community" },
+];
+
 export default async function PublicBlogHubPage() {
   let posts: any[] = [];
   try {
@@ -25,6 +95,10 @@ export default async function PublicBlogHubPage() {
     console.warn("DB fetch failed for blog posts:", err);
   }
 
+  if (!posts || posts.length === 0) {
+    posts = DEFAULT_FALLBACK_POSTS;
+  }
+
   let categories: any[] = [];
   try {
     if (prisma && prisma.blogCategory) {
@@ -34,6 +108,10 @@ export default async function PublicBlogHubPage() {
     }
   } catch (err) {
     console.warn("DB fetch failed for blog categories:", err);
+  }
+
+  if (!categories || categories.length === 0) {
+    categories = DEFAULT_FALLBACK_CATEGORIES;
   }
 
   return (

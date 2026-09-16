@@ -17,6 +17,8 @@ import {
   Building2,
 } from "lucide-react";
 
+import SafeImage from "@/components/ui/safe-image";
+
 interface ArticlePageProps {
   params: Promise<{
     slug: string;
@@ -160,7 +162,14 @@ export default async function DynamicBlogPostPage({ params }: ArticlePageProps) 
           {/* COVER IMAGE */}
           {post.coverImage && (
             <div className="relative h-72 md:h-96 w-full rounded-3xl overflow-hidden shadow-xl border border-slate-200">
-              <Image src={post.coverImage} alt={post.title} fill sizes="(max-width: 1024px) 100vw, 896px" className="object-cover" />
+              <SafeImage
+                src={post.coverImage}
+                fallbackSrc="/images/hero_caregiver_nurse.jpg"
+                alt={post.title}
+                fill
+                sizes="(max-width: 1024px) 100vw, 896px"
+                className="object-cover"
+              />
             </div>
           )}
 

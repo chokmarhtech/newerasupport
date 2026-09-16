@@ -52,9 +52,12 @@ export default function EditBlogForm({ post }: { post: any }) {
       const res = await uploadBlogImageAction(formData);
       if (res.success && res.url) {
         setCoverImage(res.url);
+      } else {
+        alert(res.error || "Failed to upload image. Please try again or paste image URL.");
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error("Cover upload error:", err);
+      alert("Failed to upload image: " + (err.message || "Unknown error"));
     } finally {
       setUploadingCover(false);
     }

@@ -3,8 +3,22 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Clock, User, Search, BookOpen, ArrowRight, Filter } from "lucide-react";
+import {
+  Clock,
+  User,
+  Search,
+  BookOpen,
+  ArrowRight,
+  Filter,
+  Shuffle,
+  Mail,
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
+} from "lucide-react";
 import { FadeIn, HoverCard } from "@/components/ui/motion";
+import { subscribeToNewsletterAction } from "@/app/actions/blog";
+import SafeImage from "@/components/ui/safe-image";
 
 interface BlogPostItem {
   id: string;
@@ -36,6 +50,13 @@ export default function PublicBlogFilter({
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
+  const [shuffledSeed, setShuffledSeed] = useState<number | null>(null);
+
+  // Newsletter Inline State
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [subscribing, setSubscribing] = useState(false);
+  const [newsSuccess, setNewsSuccess] = useState("");
+  const [newsError, setNewsError] = useState("");
 
   // Filter posts by category and search query
   const filteredPosts = initialPosts.filter((post) => {
@@ -54,15 +75,52 @@ export default function PublicBlogFilter({
     return matchesCategory && matchesSearch;
   });
 
-  // Sort posts
-  const sortedPosts = [...filteredPosts].sort((a, b) => {
-    const dateA = new Date(a.createdAt).getTime();
-    const dateB = new Date(b.createdAt).getTime();
-    return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
-  });
+  // Sort or Shuffle posts
+  let displayPosts = [...filteredPosts];
+  if (shuffledSeed !== null) {
+    // Fisher-Yates shuffle with seed
+    displayPosts = [...filteredPosts].sort(() => Math.sin(shuffledSeed) - 0.5);
+  } else {
+    displayPosts.sort((a, b) => {
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
+      return sortOrder === "newest" ? dateB - dateA : dateA - dateB;
+    });
+  }
 
-  const featuredPost = sortedPosts.length > 0 ? sortedPosts[0] : null;
-  const gridPosts = sortedPosts.length > 1 ? sortedPosts.slice(1) : [];
+  const handleShuffle = () => {
+    setShuffledSeed(Date.now());
+  };
+
+  const handleSortChange = (newOrder: "newest" | "oldest") => {
+    setShuffledSeed(null);
+    setSortOrder(newOrder);
+  };
+
+  const handleInlineSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newsletterEmail.trim()) return;
+
+    setSubscribing(true);
+    setNewsSuccess("");
+    setNewsError("");
+
+    const formData = new FormData();
+    formData.append("email", newsletterEmail.trim());
+
+    const res = await subscribeToNewsletterAction(formData);
+    setSubscribing(false);
+
+    if (res.success) {
+      setNewsSuccess(res.message || "Subscribed successfully!");
+      setNewsletterEmail("");
+    } else {
+      setNewsError(res.error || "Failed to subscribe.");
+    }
+  };
+
+  const featuredPost = displayPosts.length > 0 ? displayPosts[0] : null;
+  const gridPosts = displayPosts.length > 1 ? displayPosts.slice(1) : [];
 
   return (
     <div className="space-y-12 font-sans">
@@ -89,31 +147,51 @@ export default function PublicBlogFilter({
             )}
           </div>
 
-          {/* SORT DROPDOWN */}
-          <div className="flex items-center gap-3 shrink-0">
+          {/* SORT & SHUFFLE CONTROLS */}
+          <div className="flex items-center gap-2.5 shrink-0">
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
               <Filter className="w-3.5 h-3.5" /> Sort:
             </span>
             <select
-              value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value as "newest" | "oldest")}
+              value={shuffledSeed !== null ? "shuffled" : sortOrder}
+              onChange={(e) => {
+                if (e.target.value !== "shuffled") {
+                  handleSortChange(e.target.value as "newest" | "oldest");
+                }
+              }}
               className="bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-brand-navy focus:outline-none focus:border-brand-navy cursor-pointer transition-all shadow-xs"
             >
               <option value="newest">Newest First</option>
               <option value="oldest">Oldest First</option>
+              {shuffledSeed !== null && <option value="shuffled">Random Shuffled</option>}
             </select>
+
+            {/* SHUFFLE BUTTON */}
+            <button
+              onClick={handleShuffle}
+              className={`px-3.5 py-2.5 rounded-xl border text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs cursor-pointer ${shuffledSeed !== null
+                  ? "bg-brand-navy text-white border-brand-navy"
+                  : "bg-white text-brand-navy border-slate-200 hover:bg-slate-100"
+                }`}
+              title="Shuffle articles randomly"
+            >
+              <Shuffle className="w-3.5 h-3.5 text-emerald-500" />
+              <span>Shuffle</span>
+            </button>
           </div>
         </div>
 
         {/* CATEGORY PILLS */}
         <div className="flex flex-wrap items-center gap-2 border-t border-slate-200/60 pt-4">
           <button
-            onClick={() => setSelectedCategory("All")}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-              selectedCategory === "All"
+            onClick={() => {
+              setSelectedCategory("All");
+              setShuffledSeed(null);
+            }}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${selectedCategory === "All"
                 ? "bg-brand-navy text-white shadow-xs"
                 : "bg-white text-slate-600 hover:text-brand-navy border border-slate-200 hover:bg-slate-100"
-            }`}
+              }`}
           >
             All Articles ({initialPosts.length})
           </button>
@@ -126,20 +204,21 @@ export default function PublicBlogFilter({
             return (
               <button
                 key={cat.id}
-                onClick={() => setSelectedCategory(cat.name)}
-                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                  selectedCategory.toLowerCase() === cat.name.toLowerCase()
+                onClick={() => {
+                  setSelectedCategory(cat.name);
+                  setShuffledSeed(null);
+                }}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${selectedCategory.toLowerCase() === cat.name.toLowerCase()
                     ? "bg-brand-navy text-white shadow-xs"
                     : "bg-white text-slate-600 hover:text-brand-navy border border-slate-200 hover:bg-slate-100"
-                }`}
+                  }`}
               >
                 <span>{cat.name}</span>
                 <span
-                  className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${
-                    selectedCategory.toLowerCase() === cat.name.toLowerCase()
+                  className={`text-[10px] px-2 py-0.5 rounded-full font-extrabold ${selectedCategory.toLowerCase() === cat.name.toLowerCase()
                       ? "bg-white/20 text-white"
                       : "bg-slate-100 text-slate-600 border border-slate-200"
-                  }`}
+                    }`}
                 >
                   {count}
                 </span>
@@ -150,17 +229,18 @@ export default function PublicBlogFilter({
       </div>
 
       {/* RESULTS MESSAGING IF NONE MATCH */}
-      {sortedPosts.length === 0 && (
+      {displayPosts.length === 0 && (
         <div className="bg-white border border-slate-200 rounded-3xl p-12 text-center space-y-3">
           <BookOpen className="w-10 h-10 text-slate-300 mx-auto" />
           <h3 className="text-lg font-bold text-brand-navy">No matching articles found</h3>
           <p className="text-xs text-brand-slate max-w-md mx-auto">
-            We couldn't find any articles matching "{searchQuery}". Try searching with a different term or resetting the category filter.
+            We couldn&apos;t find any articles matching &quot;{searchQuery}&quot;. Try searching with a different term or resetting the category filter.
           </p>
           <button
             onClick={() => {
               setSearchQuery("");
               setSelectedCategory("All");
+              setShuffledSeed(null);
             }}
             className="inline-block px-5 py-2.5 rounded-xl bg-brand-navy text-white font-bold text-xs hover:bg-slate-900 transition-all mt-2"
           >
@@ -174,8 +254,9 @@ export default function PublicBlogFilter({
         <FadeIn>
           <div className="bg-slate-50 border border-slate-200 rounded-3xl overflow-hidden shadow-xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center p-6 md:p-8">
             <div className="relative h-64 md:h-80 w-full rounded-2xl overflow-hidden shadow-md">
-              <Image
-                src={featuredPost.coverImage || "/images/hero_caregiver_nurse.jpg"}
+              <SafeImage
+                src={featuredPost.coverImage}
+                fallbackSrc="/images/hero_caregiver_nurse.jpg"
                 alt={featuredPost.title}
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -226,6 +307,7 @@ export default function PublicBlogFilter({
         </FadeIn>
       )}
 
+
       {/* ARTICLES GRID */}
       {gridPosts.length > 0 && (
         <div className="space-y-6">
@@ -238,8 +320,9 @@ export default function PublicBlogFilter({
               <HoverCard key={post.id}>
                 <article className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all flex flex-col h-full">
                   <div className="relative h-48 w-full bg-slate-100">
-                    <Image
-                      src={post.coverImage || "/images/about_care_team.jpg"}
+                    <SafeImage
+                      src={post.coverImage}
+                      fallbackSrc="/images/about_care_team.jpg"
                       alt={post.title}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -298,6 +381,52 @@ export default function PublicBlogFilter({
           </div>
         </div>
       )}
+
+      {/* EMBEDDED INLINE NEWSLETTER CARD */}
+      <div className="bg-gradient-to-r from-slate-900 via-brand-navy to-slate-900 text-white border border-slate-800 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+        <div className="space-y-2 text-center md:text-left max-w-xl">
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-mint uppercase tracking-wider">
+            <Mail className="w-4 h-4" /> Healthcare & CQC Newsletter
+          </div>
+          <h3 className="text-2xl font-black text-white">Subscribe to New Era Insights</h3>
+          <p className="text-xs text-slate-300">
+            Get CQC compliance updates, healthcare workforce insights, and staffing guides delivered directly to your inbox.
+          </p>
+        </div>
+
+        <form onSubmit={handleInlineSubscribe} className="w-full md:w-auto flex-1 max-w-md space-y-2">
+          <div className="flex flex-col sm:flex-row gap-2">
+            <input
+              type="email"
+              required
+              value={newsletterEmail}
+              onChange={(e) => setNewsletterEmail(e.target.value)}
+              placeholder="Enter your email address..."
+              className="bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-xs font-medium text-white placeholder-slate-400 focus:outline-none focus:bg-white/20 flex-1"
+            />
+            <button
+              type="submit"
+              disabled={subscribing}
+              className="px-6 py-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs transition-all shadow-md shrink-0 cursor-pointer disabled:opacity-50 flex items-center justify-center gap-1.5"
+            >
+              {subscribing ? <Loader2 className="w-4 h-4 animate-spin" /> : "Subscribe"}
+            </button>
+          </div>
+
+          {newsSuccess && (
+            <p className="text-[11px] text-emerald-400 font-bold flex items-center gap-1">
+              <CheckCircle2 className="w-3.5 h-3.5" /> {newsSuccess}
+            </p>
+          )}
+
+          {newsError && (
+            <p className="text-[11px] text-rose-400 font-bold flex items-center gap-1">
+              <AlertCircle className="w-3.5 h-3.5" /> {newsError}
+            </p>
+          )}
+        </form>
+      </div>
+
     </div>
   );
 }

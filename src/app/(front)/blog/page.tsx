@@ -4,6 +4,7 @@ import Footer from "@/components/layout/Footer";
 import { FadeIn } from "@/components/ui/motion";
 import { prisma } from "@/lib/prisma";
 import PublicBlogFilter from "@/components/blog/PublicBlogFilter";
+import NewsletterModal from "@/components/blog/NewsletterModal";
 
 export const dynamic = "force-dynamic";
 
@@ -84,6 +85,8 @@ export default async function PublicBlogHubPage() {
           </div>
         </div>
       </main>
+
+      <NewsletterModal />
 
       <Footer />
     </div>

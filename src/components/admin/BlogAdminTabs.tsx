@@ -22,6 +22,7 @@ import {
   deleteBlogPostAction,
   createBlogCategoryAction,
   deleteBlogCategoryAction,
+  updateBlogCategoryAction,
 } from "@/app/actions/blog";
 
 interface BlogPostItem {
@@ -64,6 +65,13 @@ export default function BlogAdminTabs({
   const [isSubmittingCat, setIsSubmittingCat] = useState(false);
   const [catError, setCatError] = useState("");
   const [catSuccess, setCatSuccess] = useState("");
+
+  // Edit Category State
+  const [editingCat, setEditingCat] = useState<{ id: string; name: string } | null>(null);
+  const [editCatName, setEditCatName] = useState("");
+  const [isUpdatingCat, setIsUpdatingCat] = useState(false);
+  const [editCatError, setEditCatError] = useState("");
+  const [editCatSuccess, setEditCatSuccess] = useState("");
   
   // Deleting State
   const [deletingPostId, setDeletingPostId] = useState<string | null>(null);
@@ -102,6 +110,33 @@ export default function BlogAdminTabs({
       }, 1200);
     } else {
       setCatError(res.error || "Failed to create category");
+    }
+  };
+
+  // Handle Category Update
+  const handleUpdateCategory = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingCat || !editCatName.trim()) return;
+
+    setIsUpdatingCat(true);
+    setEditCatError("");
+    setEditCatSuccess("");
+
+    const formData = new FormData();
+    formData.append("name", editCatName.trim());
+
+    const res = await updateBlogCategoryAction(editingCat.id, formData);
+    setIsUpdatingCat(false);
+
+    if (res.success) {
+      setEditCatSuccess("Category updated successfully!");
+      setTimeout(() => {
+        setEditingCat(null);
+        setEditCatSuccess("");
+        router.refresh();
+      }, 1200);
+    } else {
+      setEditCatError(res.error || "Failed to update category");
     }
   };
 
@@ -332,18 +367,32 @@ export default function BlogAdminTabs({
                       </div>
 
                       {canPublish && (
-                        <button
-                          onClick={() => handleDeleteCategory(cat.id, cat.name)}
-                          disabled={deletingCatId === cat.id}
-                          className="p-2 rounded-xl text-rose-600 hover:bg-rose-100/70 border border-transparent hover:border-rose-200 transition-all cursor-pointer disabled:opacity-50"
-                          title="Delete Category"
-                        >
-                          {deletingCatId === cat.id ? (
-                            <Loader2 className="w-4 h-4 animate-spin text-rose-600" />
-                          ) : (
-                            <Trash2 className="w-4 h-4" />
-                          )}
-                        </button>
+                        <div className="flex items-center gap-1">
+                          <button
+                            onClick={() => {
+                              setEditingCat({ id: cat.id, name: cat.name });
+                              setEditCatName(cat.name);
+                              setEditCatError("");
+                              setEditCatSuccess("");
+                            }}
+                            className="p-2 rounded-xl text-emerald-700 hover:bg-emerald-100/70 border border-transparent hover:border-emerald-200 transition-all cursor-pointer"
+                            title="Edit Category Name"
+                          >
+                            <Pencil className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteCategory(cat.id, cat.name)}
+                            disabled={deletingCatId === cat.id}
+                            className="p-2 rounded-xl text-rose-600 hover:bg-rose-100/70 border border-transparent hover:border-rose-200 transition-all cursor-pointer disabled:opacity-50"
+                            title="Delete Category"
+                          >
+                            {deletingCatId === cat.id ? (
+                              <Loader2 className="w-4 h-4 animate-spin text-rose-600" />
+                            ) : (
+                              <Trash2 className="w-4 h-4" />
+                            )}
+                          </button>
+                        </div>
                       )}
                     </div>
                   );
@@ -419,6 +468,78 @@ export default function BlogAdminTabs({
                 >
                   {isSubmittingCat && <Loader2 className="w-4 h-4 animate-spin" />}
                   <span>Save Category</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* EDIT CATEGORY MODAL */}
+      {editingCat && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 md:p-8 space-y-6 shadow-2xl border border-slate-100">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+              <div className="flex items-center gap-2">
+                <Pencil className="w-5 h-5 text-brand-navy" />
+                <h3 className="text-lg font-black text-brand-navy">Edit Category</h3>
+              </div>
+              <button
+                onClick={() => {
+                  setEditingCat(null);
+                  setEditCatError("");
+                  setEditCatSuccess("");
+                }}
+                className="text-slate-400 hover:text-slate-700 p-1 rounded-lg"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {editCatError && (
+              <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs font-medium flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{editCatError}</span>
+              </div>
+            )}
+
+            {editCatSuccess && (
+              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-700 text-xs font-medium flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 shrink-0" />
+                <span>{editCatSuccess}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleUpdateCategory} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-brand-navy uppercase tracking-wider mb-2">
+                  Category Name
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editCatName}
+                  onChange={(e) => setEditCatName(e.target.value)}
+                  placeholder="e.g. Mental Health Care"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-sm text-brand-navy focus:outline-none focus:border-brand-navy focus:bg-white font-medium"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setEditingCat(null)}
+                  className="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 text-xs font-bold hover:bg-slate-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isUpdatingCat}
+                  className="px-6 py-2.5 rounded-xl bg-brand-navy hover:bg-slate-900 text-white font-bold text-xs transition-all shadow-sm cursor-pointer disabled:opacity-50 flex items-center gap-2"
+                >
+                  {isUpdatingCat && <Loader2 className="w-4 h-4 animate-spin" />}
+                  <span>Update Category</span>
                 </button>
               </div>
             </form>

@@ -72,6 +72,15 @@ model BlogCategory {
   @@map("blog_categories")
 }
 
+model BlogSubscriber {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique @db.VarChar(255)
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("blog_subscribers")
+}
+
 model Role {
   id        String   @id @default(uuid()) @db.Uuid
   title     String

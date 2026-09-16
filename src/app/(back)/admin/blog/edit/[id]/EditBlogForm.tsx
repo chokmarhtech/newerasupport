@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { updateBlogPostAction, uploadBlogImageAction, getBlogCategoriesAction } from "@/app/actions/blog";
 import RichTextEditor from "@/components/ui/rich-text-editor";
+import SafeImage from "@/components/ui/safe-image";
 import { Save, Upload, Loader2, Image as ImageIcon } from "lucide-react";
 
 export default function EditBlogForm({ post }: { post: any }) {
@@ -137,7 +138,7 @@ export default function EditBlogForm({ post }: { post: any }) {
         <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
           {coverImage ? (
             <div className="relative h-28 w-44 rounded-2xl overflow-hidden border border-slate-200 shadow-sm shrink-0">
-              <Image src={coverImage} alt="Cover preview" fill className="object-cover" />
+              <SafeImage src={coverImage} fallbackSrc="/images/hero_caregiver_nurse.jpg" alt="Cover preview" fill className="object-cover" />
             </div>
           ) : (
             <div className="h-28 w-44 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 flex flex-col items-center justify-center text-slate-400 text-xs font-semibold shrink-0">

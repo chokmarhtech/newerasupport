@@ -385,9 +385,6 @@ export default function PublicBlogFilter({
       {/* EMBEDDED INLINE NEWSLETTER CARD */}
       <div className="bg-gradient-to-r from-slate-900 via-brand-navy to-slate-900 text-white border border-slate-800 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
         <div className="space-y-2 text-center md:text-left max-w-xl">
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-mint uppercase tracking-wider">
-            <Mail className="w-4 h-4" /> Healthcare & CQC Newsletter
-          </div>
           <h3 className="text-2xl font-black text-white">Subscribe to New Era Insights</h3>
           <p className="text-xs text-slate-300">
             Get CQC compliance updates, healthcare workforce insights, and staffing guides delivered directly to your inbox.
@@ -407,7 +404,7 @@ export default function PublicBlogFilter({
             <button
               type="submit"
               disabled={subscribing}
-              className="px-6 py-3 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs transition-all shadow-md shrink-0 cursor-pointer disabled:opacity-50 flex items-center justify-center gap-1.5"
+              className="px-6 py-3 rounded-xl bg-brand-mint text-brand-navy font-bold text-xs transition-all shadow-md shrink-0 cursor-pointer disabled:opacity-50 flex items-center justify-center gap-1.5"
             >
               {subscribing ? <Loader2 className="w-4 h-4 animate-spin" /> : "Subscribe"}
             </button>

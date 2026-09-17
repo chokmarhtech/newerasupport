@@ -85,9 +85,6 @@ export default function NewsletterModal() {
           <h3 className="text-2xl font-black text-brand-navy tracking-tight">
             Discover more from New Era Insights
           </h3>
-          <p className="text-xs font-bold text-emerald-600 uppercase tracking-wider">
-            Healthcare • Staffing • CQC Compliance
-          </p>
         </div>
 
         {/* FEEDBACK MESSAGES */}
@@ -119,7 +116,7 @@ export default function NewsletterModal() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3.5 px-6 rounded-2xl bg-orange-600 hover:bg-orange-700 text-white font-black text-sm uppercase tracking-wide transition-all shadow-md hover:shadow-lg cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full py-3.5 px-6 rounded-2xl bg-brand-mint text-brand-navy font-black text-sm uppercase tracking-wide transition-all shadow-md hover:shadow-lg cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Subscribe"}
           </button>
